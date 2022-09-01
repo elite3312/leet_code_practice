@@ -9,45 +9,22 @@ class TreeNode:
          self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        unvisited=[]
-        unvisited.append(root)
-        max_left=-inf
-        on='_'
-        max_right=-inf
-        good_nodes=0
-        while len(unvisited)!=0:
-            curr=unvisited.pop()
-            if curr==root:
-                good_nodes+=1
-            if curr.left:
-                if curr==root:
-                    on='left'
-                unvisited.append(curr.left)
-                if curr!=root:
-                    match on:
-                        case 'left':
-                            if max_left<=curr.val:good_nodes+=1
-                            max_left=max(max_left,curr.val)
-                        case 'right':
-                            if max_right<=curr.val:good_nodes+=1
-                            max_right=max(max_right,curr.val)
-                        case _:pass   
-            if curr.right:
-                
-                if curr==root:
-                    on='right'
-                unvisited.append(curr.right)
-                if curr!=root:
-                    match on:
-                        case 'left':
-                            if max_left<=curr.val:good_nodes+=1
-                            max_left=max(max_left,curr.val)
-                        case 'right':
-                            if max_right<=curr.val:good_nodes+=1
-                            max_right=max(max_right,curr.val)
-                        case _:pass   
+        if not root:
+            return 0
         
-        return good_nodes
+        def dfs(node, curMax):
+            if not node:
+                return
+            if node.val >= curMax:
+                count[0] += 1
+                curMax = node.val
+            dfs(node.left, curMax)
+            dfs(node.right, curMax)
+        
+        count = [0]
+        dfs(root, root.val)
+        
+        return count[0]
 if __name__ == "__main__":
     s=Solution()
     '''
