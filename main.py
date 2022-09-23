@@ -1,40 +1,37 @@
 
-
 class Solution:
-    def concatenatedBinary(self, n: int) -> int:
-        curr_binary = '1'
-        res = ''
-        res += curr_binary
-        for i in range(1, n):
-
-            if curr_binary.endswith('1'):
-                index = -1
-                is_all_one = False
-                while (True):
-                    if curr_binary[index] == '0':
-                        break
-                    index -= 1
-                    if index == -(len(curr_binary)+1):
-                        is_all_one = True
-                        break
-                if is_all_one:
-                    curr_binary = '1'+'0'*len(curr_binary)
-                else:
-                    curr_binary = curr_binary[:index]+'1'+'0'*(-1-index)
-            else:
-                curr_binary = curr_binary[:-1]+'1'
-            res += curr_binary
-        res=int(res,2) % 1000000007
-        return res
+    def minimumLength(self, s: str) -> int:
+        while True:
+            if len(s)==1:break
+            #check if we can still remove some chars from both ends
+            if(s[-1]==s[0]):#at least one char from both ends are identical
+                current_char=s[-1]
+                start_ptr=0
+                while True:
+                    if s[start_ptr]!=current_char:break
+                    else:
+                        start_ptr+=1
+                        if start_ptr==len(s):break
+                s=s[start_ptr:]
+                if s=='':break
+                end_ptr=len(s)-1
+                while True:
+                    if s[end_ptr]!=current_char:break
+                    else:
+                        end_ptr-=1
+                        if end_ptr==-1:break
+                s=s[:end_ptr+1]
+                if s=='':break
+            else:break
+            
+        return len(s)
 
 
 if __name__ == "__main__":
 
     s = Solution()
-    # n=3
-    # n=4
-    n =12
-    ans = s.concatenatedBinary(n)
-    print(ans)
-    ans = "1101110010111011110001001101010111100"
+    #i = "cabaabac"
+    #i="ca"
+    i = "aabccabba"
+    ans = s.minimumLength(i)
     print(ans)
