@@ -17,7 +17,7 @@ class Solution:
             return arr[(n-k):]
         else:
             #case 1
-            d=dict()
+        
             l=[0]*n
             for i in range(n):
                 l[i]=(abs(arr[i]-x),arr[i])#dist,val
