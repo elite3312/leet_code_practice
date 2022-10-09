@@ -10,7 +10,7 @@ class MyCalendarThree:
 
     def book(self, start: int, end: int) -> int:
         self.books.append((start, end-1))
-        self.books.sort()
+        #self.books.sort()
         res = -1
 
         for i in range(len(self.books)):
