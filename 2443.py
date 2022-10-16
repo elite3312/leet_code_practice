@@ -5,8 +5,7 @@ class Solution:
         mid=num//2
         for i in range(mid,num):
             a=i
-            b=num-i#b is smaller than a
-            # a=140,b=041
+            b=num-i
             if b==self.rev(a):return True
         return False
 
