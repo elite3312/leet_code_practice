@@ -1,68 +1,33 @@
+# 39
+# Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+# 
+# The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the 
+# frequency
+#  of at least one of the chosen numbers is different.
+# 
+# The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+
+# Example 1:
+# Input: candidates = [2,3,6,7], target = 7
+# Output: [[2,2,3],[7]]
+# Explanation:
+# 2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+# 7 is a candidate, and 7 = 7.
+# These are the only two combinations.
+
+# Constraints:
+# 
+# 1 <= candidates.length <= 30
+# 2 <= candidates[i] <= 40
+# All elements of candidates are distinct.
+# 1 <= target <= 40
 class Solution:
-    def search(self, nums: list[int], target: int) -> int:
-        low = 0
-        upper = len(nums) - 1
-        n=len(nums) - 1
-        while low <= upper:
-
-            if low==upper and nums[low]!=target:
-                return -1
-
-            mid = (low + upper) // 2
-            if nums[mid] == target:
-                return mid
-            
-            #find left subset boundaries
-            left_low=low
-            left_upper=mid-1
-            if left_upper<left_low:
-                left_upper=left_low
-
-            #find right subset boundaries
-            right_low=mid+1
-            right_upper=upper
-
-            if right_low>right_upper:
-                right_low=right_upper
-
-            #check if the left subset is an increasing sequence, if it is, then the right subset must contain the cut point
-            if nums[left_low]<=nums[left_upper]:
-                # check if target is in the left subset
-                if nums[left_low]<=target<= nums[left_upper]:
-                    upper=left_upper
-                else:# target is in the right subset 
-                    low=right_low
-            else: #the right subset is an increasing sequence, thus the left subset must contain the cut point
-                # check if target is in the right subset
-                if nums[right_low]<=target<= nums[right_upper]:
-                    low=right_low
-                else:# target is in the left subset 
-                    upper=left_upper
-        return -1
-
+    def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
+        res=set()
 
 if __name__ == "__main__":
     sol = Solution()
-    nums = [4, 5, 6, 7, 0, 1, 2]
-    print(sol.search(nums, 0),4)
-
-    nums = [3, 1]
-    print(sol.search(nums, 2),-1)
-
-    nums = [ 1,3]
-    print(sol.search(nums, 0),-1)
-
-    nums = [ 1]
-    print(sol.search(nums, 0),-1)
-
-    nums = [ 4,5,6,7,8,1,2,3]
-    print(sol.search(nums, 8),4)
-
-    nums=[6,7,1,2,3,4,5]
-    print(sol.search(nums, 6),0)
-
-    nums=[2,3,4,5,6,7,8,9,1]
-    print(sol.search(nums, 9),7)
-
-    nums=[3,4,5,6,7,8,1,2]
-    print(sol.search(nums, 2),7)
+    candidates = [2,3,6,7]
+    target = 7
+    ans="[[2,2,3],[7]]"
+    print(sol.combinationSum(candidates, target),)
