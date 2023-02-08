@@ -79,17 +79,3 @@ if __name__ == "__main__":
     target = 3
     ans = "ans=[]\n"
     print(sol.combinationSum(candidates, target),ans)
-
-print(
-    1+
-    4+
-    3+
-    7+
-    5+
-    2+
-    1+
-    3+
-    5+
-    3+
-    10+
-    1)
