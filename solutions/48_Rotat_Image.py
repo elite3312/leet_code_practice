@@ -14,7 +14,7 @@ class Solution:
 
                 val=matrix[r][c]
                 c+=side_len-1
-                # 0
+                # 01->14
                 if c_offset>0:
                     r=leftmost_row+c_offset
                     c=leftmost_row+(side_len-1)
@@ -23,7 +23,7 @@ class Solution:
                 val=temp
                 
                 r+=side_len-1
-                # 1  
+                # 14->43  
                 if c_offset>0:
                     c=leftmost_row+(side_len-1)-c_offset
                     r=leftmost_row+(side_len-1)
@@ -31,7 +31,7 @@ class Solution:
                 matrix[r][c]=val
                 val=temp
 
-                # 2
+                # 43->30
                 c-=side_len-1
                 if c<leftmost_row:
                     r=leftmost_row+(side_len-1)-c_offset
@@ -40,7 +40,7 @@ class Solution:
                 matrix[r][c]=val
                 val=temp
 
-                # 3
+                # 30->03
                 r-=side_len-1
                 if r<leftmost_row:
                     c=leftmost_row+c_offset
