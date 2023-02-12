@@ -1,4 +1,7 @@
 # Leet Code Practice
+# 1 two sum
+hash table
+# 
 # 48 Rotate Image
 <details>
 
@@ -8,3 +11,5 @@ Start from the outer layer, rotate each layer, until you reach the core.
 
 # 49 Group Anagrams
 hash map
+# 54 spiral matrix
+iteration, address offsets
