@@ -1,7 +1,8 @@
 # Leet Code Practice
 # 1 two sum
 hash table
-# 
+# 3
+counter
 # 48 Rotate Image
 <details>
 
