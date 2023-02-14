@@ -1,43 +1,88 @@
 class Solution:
-    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:
-        r=len(matrix)
-        c=len(matrix[0])
-        total=r*c
-        curr_upperleft_r=0
-        curr_upperleft_c=0
-        curr_r_size=r
-        curr_c_size=c
-        res=[]
+    def canJump(self, nums: list[int]) -> bool:
+        n=len(nums)
+        if n==1:return True
+        goal_lists=dict()#goal_lists[i] : a list containing possible starting jump points that go to land at i
+        for i in range(n):
+            goal_lists[i]=[]
+        goal_lists[0].append(0)
+
+        for index,elem in enumerate(nums[:n-1]):
+            can_reach_farthest=index+elem
+            if can_reach_farthest>=n-1:
+                can_reach_farthest=n-1
+            goal_lists[can_reach_farthest].append(index)
+
+        #for _list in goal_lists:
+            #_list.sort()
+        
+
+        curr_goal=n-1
+        prev_curr_goal=n
         while True:
-            
+            while True:
+                curr_max_reach=nums[curr_goal]
+                if len(goal_lists[curr_goal])!=0:
+                    break
+                else: curr_goal+=1
+                if curr_goal>curr_goal+curr_max_reach:
+                    return False
+                if curr_goal==prev_curr_goal:
+                    return False
+            prev_curr_goal=curr_goal
+            curr_goal=goal_lists[curr_goal][0]
+            if curr_goal==0:
+                return True
+            else:
+                if prev_curr_goal==curr_goal:
+                    return False
 
-            for i in range(curr_c_size):
-                res.append(matrix[curr_upperleft_r][curr_upperleft_c+i])
-            if len(res)>=total:break
-            for i in range(1,curr_r_size):
-                res.append(matrix[curr_upperleft_r+i][curr_upperleft_c+curr_c_size-1])
-            if len(res)>=total:break
-            for i in range(curr_c_size-2,-1,-1):
-                res.append(matrix[curr_upperleft_r+curr_r_size-1][curr_upperleft_c+i])
-            if len(res)>=total:break
-            for i in range(curr_r_size-2,0,-1):
-                res.append(matrix[curr_upperleft_r+i][curr_upperleft_c])
-            if len(res)>=total:break
-            curr_r_size-=2
-            curr_c_size-=2
-            curr_upperleft_c+=1
-            curr_upperleft_r+=1
-        return res
-if __name__ == "__main__":
+def case_1():
     sol = Solution()
-    matrix = [[1,2,3]
-             ,[4,5,6]
-             ,[7,8,9]]
-    Output=[1,2,3,6,9,8,7,4,5]
-    res=sol.spiralOrder(matrix)
-    print(res," expected: ", Output)
+    n=[2,3,1,1,4]
+    res=sol.canJump(n)
+    expected=True
+    print(res," ", expected)
+def case_2():
+    sol = Solution()
+    n=[3,2,1,0,4]
 
-    matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
-    Output=[1,2,3,4,8,12,11,10,9,5,6,7]
-    res=sol.spiralOrder(matrix)
-    print(res," expected: ", Output)
+    res=sol.canJump(n)
+    expected=False
+    print(res," ", expected)
+def case_3():
+    sol = Solution()
+    n=[2,0,1,1,4,2,1,1,10]
+
+    res=sol.canJump(n)
+    expected=True
+    print(res," ", expected)
+def case_4():
+    sol = Solution()
+    n=[0,2,3]
+
+    res=sol.canJump(n)
+    expected=False
+    print(res," ", expected)
+def case_5():
+    sol = Solution()
+    n=[3,2,1,0,4]
+
+    res=sol.canJump(n)
+    expected=False
+    print(res," ", expected)
+#[5,9,3,2,1,0,2,3,3,1,0,0]
+def case_6():
+    sol = Solution()
+    n=[5,9,3,2,1,0,2,3,3,1,0,0]
+
+    res=sol.canJump(n)
+    expected=True
+    print(res," ", expected)
+if __name__ == "__main__":
+    #case_1()
+    #case_2()
+    #case_3()
+    #case_4()
+    #case_5()
+    case_6()
