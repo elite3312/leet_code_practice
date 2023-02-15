@@ -43,7 +43,6 @@ class Solution:
             
             if curr_farthest>=n-1:return True
             elif curr_farthest<i+1:return False
-            elif curr_farthest==i+1 and nums[i+1]==0:return False
 if __name__ == "__main__":
     s=Solution()
     
