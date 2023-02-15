@@ -1,5 +1,5 @@
 class Solution:
-    def canJump(self, nums: list[int]) -> bool:
+    def canJump_first(self, nums: list[int]) -> bool:
         n=len(nums)
 
         # edge cases
@@ -29,7 +29,21 @@ class Solution:
             if curr_farthest<reaches[i+1][0] :return False
             elif curr_farthest==reaches[i+1][0] and nums[ curr_farthest]==0 : return False
         
+    def canJump(self, nums: list[int]) -> bool:
+        n=len(nums)
 
+        # edge cases
+        if n==1:return True
+        if nums[0]==0:return False
+        
+        curr_farthest=0
+        for i in range(n):
+            
+            if curr_farthest<i+nums[i]:curr_farthest=i+nums[i]
+            
+            if curr_farthest>=n-1:return True
+            elif curr_farthest<i+1:return False
+            elif curr_farthest==i+1 and nums[i+1]==0:return False
 if __name__ == "__main__":
     s=Solution()
     
