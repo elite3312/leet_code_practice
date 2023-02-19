@@ -1,6 +1,6 @@
 from collections import Counter
 
-
+#Given a string s, find the length of the longest substring without repeating characters.
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         _counter=Counter()#a counter works similar to a dictionary. It returns 0 instead of keyerror during a miss. 
