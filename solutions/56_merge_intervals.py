@@ -1,4 +1,15 @@
 class Solution:
+    #  1_3
+    #   2_4
+    #   2__5
+    #    3__6
+    #->1____6
+
+    # 1__4
+    #  23
+    #->1__4
+
+    # o(n)
     def merge(self, intervals: list[list[int]]) -> list[list[int]]:
         n=len(intervals)
         if n==1:
