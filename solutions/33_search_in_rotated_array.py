@@ -25,14 +25,14 @@ class Solution:
             if right_low>right_upper:
                 right_low=right_upper
 
-            #check if the left subset is an increasing sequence, if it is, then the right subset must contain the cut point
+            # if the left subset is not strictly increasing, then the right subset must contain the cut point
             if nums[left_low]<=nums[left_upper]:
                 # check if target is in the left subset
                 if nums[left_low]<=target<= nums[left_upper]:
                     upper=left_upper
                 else:# target is in the right subset 
                     low=right_low
-            else: #the right subset is an increasing sequence, thus the left subset must contain the cut point
+            else: #the right subset is strictly increasing, thus the left subset must contain the cut point
                 # check if target is in the right subset
                 if nums[right_low]<=target<= nums[right_upper]:
                     low=right_low
