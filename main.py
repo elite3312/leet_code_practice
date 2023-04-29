@@ -1,211 +1,202 @@
-from collections import Counter, deque
+import heapq
+
+class Solution_tle:
+    def exist(self, board: list[list[str]], word: str) -> bool:
+        
+        unique_chars=set()
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                unique_chars.add(board[r][c])
+        for c in set(list(word)):
+            if c not in unique_chars :return False
+
+        self.board = board
+        self.word = word
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                if self.best_first_search(r, c) == True:
+                    return True
+        return False
+
+    def best_first_search(self, start_r: int, start_c: int):
+        frontier = []
+        time_stamp=0
+        curr_word = self.board[start_r][start_c]
+        h_score=self.heuristic(curr_word, self.word)
+        frontier.append((1+h_score+time_stamp,
+                         {
+                        "curr_word": curr_word,
+                        "cost": 1,
+                        "visited":[(start_r,start_c)] ,
+                        "score": h_score
+                        }
+        ))
+        time_stamp+=0.1
+        found_ans = False
+        while len(frontier) > 0:
+            node = frontier.pop()
+            node=node[1]
+            if node["curr_word"] == self.word:
+                found_ans = True
+                break
+            
+            cost = node["cost"]
+            curr_word = node["curr_word"]
+
+            # add good neighbors to queue
+            actions = []
+            r,c=node['visited'][-1]
+            if r-1 >= 0 and ((r-1),c) not in node['visited']:
+                actions.append((r-1, c))
+
+            if c-1 >= 0 and (r, c-1) not in node['visited']:
+                actions.append((r, c-1))
+
+            if r+1 <= len(self.board)-1 and (r+1, c) not in node["visited"]:
+                actions.append((r+1, c))
+
+            if c+1 <= len(self.board[0])-1 and (r, c+1) not in node['visited'] :
+                actions.append((r, c+1))
+            pass
+            for action in actions:
+                new_word = curr_word+self.board[action[0]][action[1]]
+                new_visted=list(node['visited'])
+                new_visted.append(action)
+                h_score = self.heuristic(new_word, self.word)
+                if h_score > 0:
+                    heapq.heappush(frontier,
+                                   (cost+1+h_score+time_stamp,
+                                    {
+                                        "curr_word": new_word,
+                                        "cost": cost+1,
+                                        "visited": new_visted,
+                                        "score": h_score
+                                    }))
+                    time_stamp+=0.1
+
+        if found_ans:
+            return True
+        else:
+            return False
+
+    def heuristic(self, curr_word: str, target_word: str):
+        if len(curr_word) > len(target_word):
+            return -100
+
+        # count occurences of unique chars in curr_word
+        hash_table_curr_word = [0]*200
+        for c in curr_word:
+            hash_table_curr_word[ord(c)] += 1
+
+        # count occurences of unique chars in curr_word
+        hash_table_target_word = [0]*200
+        for c in target_word:
+            hash_table_target_word[ord(c)] += 1
+
+        # check similarity
+        total_chars = len(target_word)
+        correct_chars = 0
+        for c in set(list(curr_word)):
+            if hash_table_target_word[ord(c)] >= hash_table_curr_word[ord(c)]:
+                correct_chars += hash_table_curr_word[ord(c)]
+            else:
+                return -100
+        return correct_chars/total_chars
+
+    def test_heuristic(self):
+        target_word = 'ABCTTTTCED'
+        curr_word = 'DAE'
+        # 3/10=0.3
+        print("expected heuristic score = %f, output score = %f" %
+              (0.3, self.heuristic(curr_word, target_word)))
+
+        target_word = 'ABC'
+        curr_word = 'DAE'
+        # 0/3=0
+        print("expected heuristic score = %f, output score = %f" %
+              (-100, self.heuristic(curr_word, target_word)))
+
+        target_word = 'ABC'
+        curr_word = 'AAB'
+
+        print("expected heuristic score = %f, output score = %f" %
+              (-100, self.heuristic(curr_word, target_word)))
+
+        target_word = 'ABC'
+        curr_word = 'AB'
+
+        print("expected heuristic score = %f, output score = %f" %
+              (0.66, self.heuristic(curr_word, target_word)))
 
 
 class Solution:
-    def minWindow(self, s: str, t: str) -> str:
-        # get counts of chars in t
-        t_counts = Counter(t)
-        # create a counter for keeping track of chars in w
-        w = Counter()
-        # keep track of shortest answer found so far
-        r = ''
-        # keep track of which characters we have in the current window
-        window = deque()
-        for ch in s:
-            # add current character to window
-            window.append(ch)
-            # increment count in window
-            w[ch] += 1
-            # check if predicate is satisfied (window contains all chars in t)
-            if all(w[c] >= t_counts[c] for c in t_counts.keys()):
-                # remove unnecessary (superfluous) chars
-                while window and w[window[0]] > t_counts[window[0]]:
-                    w[window.popleft()] -= 1
-                # record this new answer only if it is shorter than a previous answer
-                # (or if no previous answer exists)
-                if r == '' or len(window) < len(r):
-                    r = ''.join(window)
-                # remove the last added char so we can keep looking for more substrings
-                if window:
-                    w[window.popleft()] -= 1
-           
-        return r
-    def minWindow_tle(self, s: str, t: str) -> str:
-        # we use prefix_sum sums
-        if len(t) > len(s):
-             return ''
-        # 1. loop through t, and count occurences of unique characters in t
-        t_count=[0]*52# upper case*26+lower case*26 
-        for c in t:
-            if 65<=ord(c)<=90:
-                t_count[ord(c)-65]+=1
-            else:
-                t_count[ord(c)-71]+=1
-
-        index_with_nonzero_elems_in_t_count=[]
-        for i in range(52):
-            if t_count[i]>0:
-                index_with_nonzero_elems_in_t_count.append(i)
-        
-        # check edge case where len(t)==1:
-        if len(t)==1:
-            if s.find(t)>-1:
-                return t
-            else:return ""
-        
-        # 2.loop through s, and count occurences of characters in t
-        s_sum=[]# s_sum[i]=accumulated the sum of occurences of each key in t_count from s[0] to s[i]
-            
-        for i in range(len(s)):
-            if i==0:
-                curr_dict=[0]*52
-            else:
-                curr_dict=s_sum[i-1].copy()# copy last dict
-            if 65<=ord(s[i])<=90:
-                if t_count[ord(s[i])-65]>0:
-                    curr_dict[ord(s[i])-65]+=1
-            else:
-                if t_count[ord(s[i])-71]>0:
-                    curr_dict[ord(s[i])-71]+=1
-            s_sum.append(curr_dict)
-       
-        # check edge case where s does not have all chars of t
-        last_prefix_sum= s_sum[len(s)-1]
-        for i in range(52):
-            if last_prefix_sum[i]<t_count[i]:return ""
-        
-        
-        
-        # 3 move the window of size len(t_count) accross and check conditions
-        window_size=len(t)
-        win_condition=len(index_with_nonzero_elems_in_t_count)      
-        
-        res=s
-        # window[start_index:end_index]=s[start_index,end_index)
-        for start_index in range(0,len(s)):
-            for end_index in range(start_index+window_size,len(s)+1):
-                
-                # get occurences of each key in t_count
-              
-                curr_streak=0 # if win_condition==len(t_count.keys)
-                too_small=False
-
-                for i in index_with_nonzero_elems_in_t_count:
+    def exist(self, board: list[list[str]], word: str) -> bool:
+        board=[[1,2],
+               [3,4]]
+        r=len(board)
+        c=len(board[0])
+        transpose_board=[[0]*r]*c
+        for row in range (r):
+            for col in range(c):
+                transpose_board[col][row]=board[row][col]
+        for i in range(len(word)-1):
+            curr_word=word[i:i+2]
+            curr_word_exists=False
+            for w  in board:
+                if ''.join(w). find(curr_word)>=0 or \
+                    ''.join(w). find(curr_word[::-1])>=0:
+                    curr_word_exists=True
+                    break
                     
-                    if start_index==0:
-                        occurrences_for_this_char=s_sum[end_index-1][i]
-                        
-                    else:#start_index>=1:
-                        occurrences_for_this_char=s_sum[end_index-1][i]-s_sum[start_index-1][i]
-                    if occurrences_for_this_char<t_count[i]:
-                        too_small=True
+            if curr_word_exists==False:
+                for w in transpose_board:
+                    if ''.join(w).find(curr_word)>=0 or \
+                        ''.join(w). find( curr_word[::-1])>=0:
+                        curr_word_exists=True
                         break
-                    elif occurrences_for_this_char>=t_count[i]:
-                        curr_streak+=1
-                if too_small:continue
-                if curr_streak==win_condition:
-                    if end_index-start_index<len(res):
-                        res=s[start_index:end_index] 
-                    if end_index-start_index == window_size:
-                        return s[start_index:end_index]
-                    
-        return res
-    
-               
+            if curr_word_exists==False:return False
+        return True
+def test_driver(s: Solution, input1: any, input2: any, expected: str):
+    ans = s.exist(input1, input2)
+    print('\ninput1__:', input1)
+    print('input2__:', input2)
+    print("ans: ", ans)
+    print('expected:', expected)
 
 
 if __name__ == "__main__":
 
     s = Solution()
-    input1 = "mspkqlcdmrwgrmcaytxilusinwgjvkdhfuuvfwarpxaglegjyftlblvqjezhqeovyisfgtxvqzdbdlmbthowumnfqomitbetlyzsrwpjvvkygycbfsyzgnfwbrhwunqilpadnrmkmzkvzowfhwgnjnmlftjbgzjtolwddlnrmymlmlsvhzltmzgtspvapetfqsjvfymrybelmxivwtokuueokbobhkgzerujqjcomgbadmxbhmociuquvhxereexvainlkcxsfxyrvzzjpbtjrqgynlrtpqrryedkiadqabhxcigslbdftkfhvxcmptdoagykjdajekgjsodgrgllqqulpwzfsdvsjtcszfddplojbrptyagqtaeiydnqgiksepmduqildxwfqmaqoghhilqiqfbxqlrucdzythlzgiexwepkmwuwjmeatfzjtqfxtewpohourutnajamhwiriotbwsnpismdxkunskhjedzeozsvvaofrhinzvcjoqpnbjavwjgcohjcgbadeokvytizomjeearhlrchdlkrstwbwwgamrxkkhkatvfavwhgqmqvzamrviutebutstfcbpcwmjwjigqyuittkhmfqhywkupcqvgrmkpbumkcuacokxhuevzwcatmwkqmhwfwjvxfjhhdkltuicpoxqlcsgqpshdafjwqevvpcesmpljzpyomqbqjjhabqddvozoswjhzobndowfdwvsnwiwhryihbmfqntkkculsxyyoxdrtyliwwgdnenvgbcypvkbzgmsemqujvlftzprvwwialfinjieetfgbtahhqbtlnagop"
-    input2 = "zjlxtmibwxkfbraixbdx"
-    excepted = "wtokuueokbobhkgzerujqjcomgbadmxbhmociuquvhxereexvainlkcxsf"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
 
-    input1 = "baBBba"
-    input2 = "aB"
-    excepted = "aB"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
+    input1 = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
+    input2 = "ABCCED"
+    expected = "true"
+    test_driver(s, input1, input2, expected)
+    # s.test_heuristic()
+    input1 = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","B"],["A","A","A","A","B","A"]]
+    input2 = "AAAAAAAAAAAAABB"
+    expected = "false"
+    test_driver(s, input1, input2, expected)
 
-    input1 = "aabaabaaab"
-    input2 = "bb"
-    excepted = "baab"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
+    input1 = [["A", "B"], [ "C", "D"]]
+    input2 = "AB"
+    expected = "true"
+    test_driver(s, input1, input2, expected)
 
-    input1 = "aa"
-    input2 = "aa"
-    excepted = "aa"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
+
+    input1 = [["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"],["A","A","A","A","A","A"]]
+    input2 = "AAAAAAAAAAAAAAB"
+    expected = "false"
+    test_driver(s, input1, input2, expected)
+
+
+    input1 = [["a", "b"], ["c", "d"]]
+    input2 = "abcd"
+    expected = "false"
+    test_driver(s, input1, input2, expected)
+
+
     
-    input1 = "a"
-    input2 = "aa"
-    excepted = ""
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
-
-    input1 = "ADOBECODEBANC"
-    input2 = "ABC"
-    excepted = "BANC"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
-
-    input1 = "rriswzrehwhvhbrzwkkogeuxsvfsipmzjwthxllfjtcsutrtfbhmidlcyruiiihrgdzdqkkzfnrcilvomecwjnyiguqpcaikdhovuaubnndyyyoleqhofiymcqdfqlpvvfqpgmqvawvywjlbbvrhdpvhfymyletglmxtyqpamkzkumlvhcemrzuzzixnoqvaevtflifzvejrrxoabtnvuhuwprjejgeobztokynffzyyymyzhluesoakflortuhvtclfabkhakfaxgzgrukmkmwszmjtgqqbubhucteeeledrejjawvkitckfnfnfvqzwxwbtcfznmcfqnqsjncughenwjaegqdeqbfldnktzmyrbojldnhjwnytyyzeqckigstlfdegrcztsigxxpgucepceoixssfakbmreqxyvytpibngqvcucrwihefbwncjooaugasbynthoinedryhkwqraxsxkwiamivtipwjdpqrxfwdywkitcztatsmsanelixvxweclwuldsqbocjhfkdhgxtyagclqciqynsllmyrgouvreeyqjfwhywjhbwxdepdtkofynyfdsauygspqznzykifleeqiwtcghjewhjazjwysrpiqchqorvzvcrfakjguskqzusbfp"
-    input2 = "zxgohysqphhm"
-    excepted = "ogeuxsvfsipmzjwthxllfjtcsutrtfbhmidlcyruiiihrgdzdq"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
-
-    input1 = "aaaaaaaaaaaabbbbbcdd"
-    input2 = "abcdd"
-    excepted = "abbbbbcdd"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
-
-    input1 = "abc"
-    input2 = "bc"
-    excepted = "bc"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
 
 
-
-    input1 = "a"
-    input2 = "a"
-    excepted = "a"
-    ans = s.minWindow(input1,input2)
-    print('\ninput1__:', input1)
-    print('input2__:', input2)
-    print("ans: ",ans)
-    print('expected:', excepted)
-
+    
