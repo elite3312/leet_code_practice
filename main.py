@@ -4,24 +4,28 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
-class Solution:
-    def isValidBST(self, root: TreeNode) -> bool:
-        path=[]
-        self.in_order_traverse(root,path)
 
-        for i in range(len(path)-1):
-            if path[i]>=path[i+1]:return False
-        return True
-    def in_order_traverse(self,root:TreeNode,path:list):
-        if root is None:
-            return 
-        self.in_order_traverse(root.left,path)
-        path.append(root.val)
-        self.in_order_traverse(root.right,path)
+class Solution:
+    def buildTree(self, preorder: list[int], inorder: list[int]) -> TreeNode | None:
+        in_index_map = dict(map(reversed, enumerate(inorder)))
+        
+        def build_tree(pre_start: int, in_start: int, in_end: int) -> tuple[TreeNode | None, int]:
+            if in_start >= in_end: return None, pre_start
+            
+            root_val = preorder[pre_start]
+            root_index = in_index_map[root_val]
+            
+            l_tree, pre_end = build_tree(pre_start + 1, in_start, root_index)
+            r_tree, pre_end = build_tree(pre_end, root_index + 1, in_end)
+            
+            return TreeNode(root_val, l_tree, r_tree), pre_end
+        
+        return build_tree(0, 0, len(inorder))[0]
+
 
 def test_driver(s: Solution, input1: any, input2: any, expected: str):
     # change this line
-    ans = s.numDecodings(input1)
+    ans = s.buildTree(input1,input2)
 
     print('\ninput1__:', input1)
     print('input2__:', input2)
@@ -32,4 +36,6 @@ def test_driver(s: Solution, input1: any, input2: any, expected: str):
 if __name__ == "__main__":
 
     s = Solution()
+    # pre, in
+    test_driver(s,[3,9,20,15,7], [9,3,15,20,7],[3,9,20,None,None,15,7])
 
