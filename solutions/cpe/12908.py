@@ -19,7 +19,7 @@ page and the total number pages in the book. Each valid test case must generate 
 class Solution:
     def __init__(self) -> None:
         self.sums=[1]
-        for upper in range(2,300):
+        for upper in range(2,20000):
             sum=int((1+upper)*upper/2)
             self.sums.append(sum)
 
@@ -27,7 +27,7 @@ class Solution:
        
 
         index=-1
-        for i in range(0,299):
+        for i in range(0,20000-1):
             if self.sums[i]>sum:
                 index=i
                 break
