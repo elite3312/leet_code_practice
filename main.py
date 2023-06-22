@@ -1,33 +1,57 @@
-# Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
+from math import inf
 
 class Solution:
-    def maxPathSum(self, root: TreeNode) -> int:
-        max_path = float("-inf") # placeholder to be updated
+    def maxProduct(self, nums: list[int]) -> int:
+        
+        p = 0
+        
+        first_neg = 0
+        first_neg_excluded = False
+        
+        p_max = -inf
+        
+        for x in nums:
             
-        def get_max_gain(node):
-            nonlocal max_path # This tells that max_path is not a local variable
-            if node is None:return 0
-    
-            gain_on_left = max(get_max_gain(node.left), 0) # Read the part important observations
-            gain_on_right = max(get_max_gain(node.right), 0)  # Read the part important observations
-    
-            current_max_path = node.val + gain_on_left + gain_on_right # Read first three images of going down the recursion stack
-            max_path = max(max_path, current_max_path) # Read first three images of going down the recursion stack
-
-            return node.val + max(gain_on_left, gain_on_right) # Read the last image of going down the recursion stack
- 			
- 			
-        get_max_gain(root) # Starts the recursion chain
-        return max_path		
+            if x == 0:
+                p = 0
+                first_neg = 0
+                first_neg_excluded = False
+            
+            elif x > 0:
+                
+                if p == 0:
+                    p = x
+                    
+                else:
+                    p *= x
+                
+                    if p < 0:
+                        p //= first_neg
+                        first_neg_excluded = True
+            
+            else:
+                p = p * x if p != 0 else x
+                
+                if p < 0:
+                
+                    if first_neg == 0:
+                        first_neg = p
+                    
+                    elif first_neg_excluded:
+                        p *= first_neg
+                        first_neg_excluded = False
+                    
+                    else:
+                        p //= first_neg
+                        first_neg_excluded = True
+            
+            if p > p_max:
+                p_max = p
+        
+        return p_max
 def test_driver(s: Solution, input1: any, input2: any, expected: str):
     # change this line
-    ans = s.maxPathSum(input1)
+    ans = s.maxProduct(input1)
 
     print('\ninput1__:', input1)
     print('input2__:', input2)
