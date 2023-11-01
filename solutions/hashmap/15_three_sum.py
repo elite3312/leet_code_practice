@@ -4,9 +4,9 @@ class Solution:
         nums.sort()
         d=dict()
         res=set()
-        pos_start=0
+        pos_start=0# index of 1st non-zero element
         _found_index=False
-        zero_count=0
+        zero_count=0# count zeroes in nums
         for i,elem in enumerate(nums):
             if elem >=0 and not _found_index:
                 pos_start=i
@@ -14,7 +14,7 @@ class Solution:
             if elem==0:
                 zero_count+=1
             d[elem]=i
-        if zero_count==n:return [[0]*3]
+        if zero_count==n:return [[0]*3]# nums is all zero
         elif zero_count>=3:
             res.add((0,0,0))
         for i in range(pos_start):
