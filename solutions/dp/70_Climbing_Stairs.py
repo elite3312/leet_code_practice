@@ -9,8 +9,12 @@ class Solution:
         self.dp=dp
     def climbStairs(self, n: int) -> int:
         # dp[n]: ways of climbing n stairs, using steps 1 or 2 wide
-        
         '''
+        Intuition:
+        To calculate the number of ways to climb the stairs, we can observe that when we are on the nth stair,
+        we have two options:
+            either we climbed one stair from the (n-1)th stair or
+            we climbed two stairs from the (n-2)th stair.
         dp[1]= ["1"]
         dp[2]= ["2",
                 "1,1"]
