@@ -5,7 +5,7 @@ key=sys.argv[1]
 found_sol=False
 for f in os.listdir(sols_path):
     for sol in os.listdir(os.path.join(sols_path,f)):
-        if sol.startswith(key):
+        if sol.find(key)>-1:
             print('Found in %s'%f)
             found_sol=True
             break
