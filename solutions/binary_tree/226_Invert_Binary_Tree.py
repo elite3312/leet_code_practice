@@ -5,16 +5,18 @@ class TreeNode:
         self.left = left
         self.right = right
 class Solution:
-    def kthSmallest(self, root:TreeNode, k: int) -> int:
-        res=[]
-        def in_order(node):
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        def post_order(node:TreeNode):
             if node is None:return
 
-            in_order(node.left)
-            res.append(node.val)
-            in_order(node.right)
-        in_order(root)
-        return res[k-1]
+            post_order(node.left)
+            post_order(node.right)
+            _=node.left
+            node.left=node.right
+            node.right=_
+        post_order(root)
+        return root
+
                                 
 from utils.test_driver import test_driver
 if __name__ == "__main__":
@@ -22,4 +24,4 @@ if __name__ == "__main__":
     root=TreeNode(2)
     root.left=TreeNode(1)
     root.right=TreeNode(3)
-    test_driver(s.kthSmallest,root,1,expected=None)
+    test_driver(s.invertTree,root,expected=None)
