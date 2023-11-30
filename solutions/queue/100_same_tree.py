@@ -4,7 +4,7 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
-class Solution:
+class Solution_slow:
     def isSameTree(self, p: TreeNode, q:TreeNode) -> bool:
         queue_p=[]
         queue_q=[]
@@ -29,7 +29,17 @@ class Solution:
                     queue_q.append(q_node.left)
                     queue_q.append(q_node.right)
         return True
+class Solution:
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        n1,n2=p,q
+        if n1==None and n2==None:return True
+        if(n1==None and n2!=None)or(n1!=None and n2==None):return False
+        if (n1.val!=n2.val):return False
 
+        if not self.isSameTree(n1.left,n2.left):return False        
+        if not self.isSameTree(n1.right,n2.right):return False
+
+        return True
 def test_driver(s: Solution, input1: any, input2: any, expected: str):
     # change this line
     ans = s.isSameTree(input1,input2)
