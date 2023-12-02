@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -20,6 +20,9 @@ public:
 int main (){
     Solution *s=new Solution();
     vector<int> v;
+    v.push_back(1);
+    
+    v.push_back(4);
     s->twoSum(v,5);
     return 0;
 }
