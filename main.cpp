@@ -1,7 +1,8 @@
+#include "utils/TestDriver.hpp"
 #include <iostream>
 #include <vector>
-#include "utils/TestDriver.hpp"
-
+#include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 class Solution {
@@ -11,7 +12,7 @@ public:
         int n=coins.size();
 
         int dp[12][10001]={0};
-        int Inf = 1e9;  
+        int Inf = 12;//1e9;  
         for (int j =0 ;j<amount+1;j++){
             dp[0][j]=j%coins[0]!=0 ? Inf:j/coins[0];
         }
@@ -31,10 +32,17 @@ public:
 };
 int main (){
     Solution *s=new Solution();
-    vector<int> v={1,2,5};
-
-    int res=0;
-    res=s->coinChange(v,100);
+    vector<vector<int>>input1={{1,2,5},{186,419,83,408}};
     
+    vector<int>input2={11,6249};
+    
+    vector<int>res={3,20};
+
+    int n= res.size();
+    for (int i =0;i<n;i++){
+        int out=s->coinChange(input1[i],input2[i]);
+        if (res[i]!=out)
+            cout<<"case "<<i<< " failed";
+    }
     return 0;
 }

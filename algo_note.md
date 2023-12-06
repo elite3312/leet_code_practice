@@ -2,7 +2,6 @@
 
 ## todo
 
-- test_driver cpp
 - 695. Max Area of Island
 - lca
 
