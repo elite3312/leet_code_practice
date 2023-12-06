@@ -1,28 +1,23 @@
 #include <iostream>
 #include <vector>
+#include "utils/TestDriver.hpp"
 using namespace std;
-
 
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        int n = nums.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if (nums[i] + nums[j] == target) {
-                    return {i, j};
-                }
-            }
-        }
-        return {}; // No solution found
+    int coinChange(vector<int>& coins, int amount) {
+        int n=coins.size();
+        return n;
     }
 };
 int main (){
     Solution *s=new Solution();
-    vector<int> v={1,4};
-    s->twoSum(v,5);
-    for (int i=0;i<v.size();i++){
-        cout<<v[i];
-    }
+    vector<int> v={1,2,5};
+
+    int res=0;
+    res=s->coinChange(v,11);
+    
+    cout<<"ret:"<<res;
+    
     return 0;
 }
