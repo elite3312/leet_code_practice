@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "utils/TestDriver.hpp"
-
+#include <algorithm>
 using namespace std;
 
 class Solution {
