@@ -73,11 +73,11 @@ class Solution:
         Max_Str=s[0]#maximum substring.
         s = '#' + '#'.join(s) + '#'
         dp = [0 for _ in range(len(s))]#save the plinedrome radius
-        center = 0
-        right = 0
+        center = 0# center of maximum palinedrome substr so far
+        right = 0# right bound of maximum palinedrome substr so far
         for i in range(len(s)):
             if i < right:
-                dp[i] = min(right-i, dp[2*center-i])
+                dp[i] = min(right-i, dp[center+center-i])
             while i-dp[i]-1 >= 0 and i+dp[i]+1 < len(s) and s[i-dp[i]-1] == s[i+dp[i]+1]:
                 dp[i] += 1
             if i+dp[i] > right:#update center and right bound
