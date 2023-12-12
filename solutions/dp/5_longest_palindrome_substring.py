@@ -65,6 +65,28 @@ class Solution:
                         res=s[i:j+1]
                 
         return res
+    def longestPalindrome_manacher(self, s: str) -> str:
+        if len(s) <= 1:
+            return s
+        
+        Max_Len=1#keep track of the maximum length of the palindrome.
+        Max_Str=s[0]#maximum substring.
+        s = '#' + '#'.join(s) + '#'
+        dp = [0 for _ in range(len(s))]#save the plinedrome radius
+        center = 0
+        right = 0
+        for i in range(len(s)):
+            if i < right:
+                dp[i] = min(right-i, dp[2*center-i])
+            while i-dp[i]-1 >= 0 and i+dp[i]+1 < len(s) and s[i-dp[i]-1] == s[i+dp[i]+1]:
+                dp[i] += 1
+            if i+dp[i] > right:#update center and right bound
+                center = i
+                right = i+dp[i]
+            if dp[i] > Max_Len:#update res
+                Max_Len = dp[i]
+                Max_Str = s[i-dp[i]:i+dp[i]+1].replace('#','')
+        return Max_Str
 if __name__ == "__main__":
     s=Solution()
     a="babad"#bab
@@ -82,5 +104,5 @@ if __name__ == "__main__":
     print(s.longestPalindrome(a))
     a="ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi"
     
-    print(s.longestPalindrome(a))
+    print(s.longestPalindrome_manacher(a))
     
