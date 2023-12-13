@@ -1,108 +1,144 @@
+from utils.test_driver import test_driver
+
+
 class Solution:
 
     def longestPalindrome_TLE(self, s: str) -> str:
-        dp=dict()#dp[i,j]=true if si...sj is palindrome
-        n=len(s)
-   
+        dp = dict()  # dp[i,j]=true if si...sj is palindrome
+        n = len(s)
 
-        #set base case of len 1 and 2
+        # set base case of len 1 and 2
         for i in range(n):
-            dp[i,i]=True
-            
-            if i>n-2:continue
-            if s[i]==s[i+1]:
-                dp[i,i+1]=True
-               
+            dp[i, i] = True
+
+            if i > n-2:
+                continue
+            if s[i] == s[i+1]:
+                dp[i, i+1] = True
+
             else:
-                dp[i,i+1]=False
-        for j_offset in range(2,n):
-            for i in range(0,n-j_offset):
-                if dp[i+1,(i+j_offset)-1]:
-                    if s[i]==s[i+j_offset]:
-                        dp[i,i+j_offset]=True
-                        
+                dp[i, i+1] = False
+        for j_offset in range(2, n):
+            for i in range(0, n-j_offset):
+                if dp[i+1, (i+j_offset)-1]:
+                    if s[i] == s[i+j_offset]:
+                        dp[i, i+j_offset] = True
+
                     else:
-                        dp[i,i+j_offset]=False
+                        dp[i, i+j_offset] = False
                 else:
-                    dp[i,i+j_offset]=False
-        res=''
+                    dp[i, i+j_offset] = False
+        res = ''
         for key in dp:
             if dp[key]:
-                if key[1]-key[0]+1>len(res):
-                    res=s[key[0]:key[1]+1]
-                
-        return res
-    def longestPalindrome(self, s: str) -> str:
-        dp=[[False]*len(s) for _ in range(len(s))]
-        n=len(s)
-   
+                if key[1]-key[0]+1 > len(res):
+                    res = s[key[0]:key[1]+1]
 
-        #set base case of len 1 and 2
+        return res
+
+    # n^2
+    def longestPalindrome_dp_n_square(self, s: str) -> str:
+        dp = [[False]*len(s) for _ in range(len(s))]
+        n = len(s)
+
+        # set base case of len 1 and 2
         for i in range(n):
-            dp[i][i]=True
-            
-            if i>n-2:continue
-            if s[i]==s[i+1]:
-                dp[i][i+1]=True
-               
+            dp[i][i] = True
+
+            if i > n-2:
+                continue
+            if s[i] == s[i+1]:
+                dp[i][i+1] = True
+
             else:
-                dp[i][i+1]=False
-        for j_offset in range(2,n):
-            for i in range(0,n-j_offset):
+                dp[i][i+1] = False
+        for j_offset in range(2, n):
+            for i in range(0, n-j_offset):
                 if dp[i+1][(i+j_offset)-1]:
-                    if s[i]==s[i+j_offset]:
-                        dp[i][i+j_offset]=True
-                        
+                    if s[i] == s[i+j_offset]:
+                        dp[i][i+j_offset] = True
+
                     else:
-                        dp[i][i+j_offset]=False
+                        dp[i][i+j_offset] = False
                 else:
-                    dp[i][i+j_offset]=False
-        res=''
+                    dp[i][i+j_offset] = False
+        res = ''
         for i in range(n):
             for j in range(n):
                 if dp[i][j]:
-                    if j-i+1>len(res):
-                        res=s[i:j+1]
-                
+                    if j-i+1 > len(res):
+                        res = s[i:j+1]
+
         return res
-    def longestPalindrome_manacher(self, s: str) -> str:
-        if len(s) <= 1:
+
+    # manacher
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        # base case
+        if n <= 1:
             return s
-        
-        Max_Len=1#keep track of the maximum length of the palindrome.
-        Max_Str=s[0]#maximum substring.
-        s = '#' + '#'.join(s) + '#'
-        dp = [0 for _ in range(len(s))]#save the plinedrome radius
-        center = 0# center of maximum palinedrome substr so far
-        right = 0# right bound of maximum palinedrome substr so far
-        for i in range(len(s)):
-            if i < right:
-                dp[i] = min(right-i, dp[center+center-i])
-            while i-dp[i]-1 >= 0 and i+dp[i]+1 < len(s) and s[i-dp[i]-1] == s[i+dp[i]+1]:
-                dp[i] += 1
-            if i+dp[i] > right:#update center and right bound
-                center = i
-                right = i+dp[i]
-            if dp[i] > Max_Len:#update res
-                Max_Len = dp[i]
-                Max_Str = s[i-dp[i]:i+dp[i]+1].replace('#','')
-        return Max_Str
+        s = "#"+"#".join(s)+"#"
+
+        # dp[i]=the diameter of the palinedrome string centered at i. Initially set to 1, since avery char is a plindrome
+        dp = [1 for _ in s]
+        max_right_center = -1
+        # this is quite important. this represents the center of "the palinedrome 
+        # that achieves the rightmost bound"
+        max_right = -1# the rightmost bound of palinedrome substr
+        n = len(s)
+        # iterate thru every center in s
+        for center in range(n):  # i is the curr center of the s
+
+            # if it is possible to copy the palinedrom diameters from the mirrored index
+            if max_right_center-(center-max_right_center) >= 0:
+                dp[center] = min(# if center + copied diamter exceeds right bound, 
+                    # we can only increae the diameter to touch the right bound. 
+                    # The reason is that we cannot be sure that substrings centered 
+                    # at 'center' with  diameter that exceeds right bound is palinedrome
+                    dp[max_right_center-(center-max_right_center)], max_right-center)
+
+            # expand the substring centered at 'center', starting with diameter=dp[center]
+            while center-dp[center] >= 0 and center+dp[center] < n and s[center-dp[center]] == s[center+dp[center]]:
+                dp[center] += 1
+
+            # update max_right and max_right_center
+            if center+dp[center] > max_right:
+                max_right = min(center+dp[center], n)
+                max_right_center = center
+
+        # extract res
+        max_dp = -1
+        max_dp_index = -1
+        for i, v in enumerate(dp):
+            if max_dp < v:
+                max_dp = v
+                max_dp_index = i
+
+        res=s[max_dp_index-max_dp+1:max_dp_index+max_dp]
+        res=res.replace("#",'')
+        return res
+
+
 if __name__ == "__main__":
-    s=Solution()
-    a="babad"#bab
-    print(s.longestPalindrome(a))
-    a="cbbd"#bb
-    print(s.longestPalindrome(a))
-    a='bb'#bb
-    print(s.longestPalindrome(a))
-    a="abcba"#"abcba"
-    print(s.longestPalindrome(a))
-    a="eabcb"#bcb
-    print(s.longestPalindrome(a))
-    a="mqizdjrfqtmcsruvvlhdgzfrmxgmmbguroxcbhalzggxhzwfznfkrdwsvzhieqvsrbyedqxwmnvovvnesphgddoikfwuujrhxwcrbttfbmlayrlmpromlzwzrkjkzdvdkpqtbzszrngczvgspzpfnvwuifzjdrmwfadophxscxtbavrhfkadhxrmvlmofbzqshqxazzwjextdpuszwgrxirmmlqitjjpijptmqfbggkwaolpbdglmsvlwdummsrdyjhmgrasrblpjsrpkkgknsucsshjuxunqiouzrdwwooxclutkrujpfebjpoodvhknayilcxjrvnykfjhvsikjabsdnvgguoiyldshbsmsrrlwmkfmyjbbsylhrusubcglaemnurpuvlyyknbqelmkkyamrcmjbncpafchacckhymtasylyfjuribqxsekbjkgzrvzjmjkquxfwopsbjudggnfbuyyfizefgxamocxjgkwxidkgursrcsjwwyeiymoafgyjlhtcdkgrikzzlenqgtdukivvdsalepyvehaklejxxmmoycrtsvzugudwirgywvsxqapxyjedbdhvkkvrxxsgifcldkspgdnjnnzfalaslwqfylmzvbxuscatomnmgarkvuccblpoktlpnazyeazhfucmfpalbujhzbykdgcirnqivdwxnnuznrwdjslwdwgpvjehqcbtjljnxsebtqujhmteknbinrloregnphwhnfidfsqdtaexencwzszlpmxjicoduejjomqzsmrgdgvlrfcrbyfutidkryspmoyzlgfltclmhaeebfbunrwqytzhuxghxkfwtjrfyxavcjwnvbaydjnarrhiyjavlmfsstewtxrcifcllnugldnfyswnsewqwnvbgtatccfeqyjgqbnufwttaokibyrldhoniwqsflvlwnjmffoirzmoxqxunkuepj"
-    #"vkkv"
-    print(s.longestPalindrome(a))
-    a="ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi"
-    
-    print(s.longestPalindrome_manacher(a))
-    
+    s = Solution()
+
+    tests = [
+        ["abac", "aba"],
+        ["babad", "bab"],
+        
+        ["cbbd", "bb"],
+        
+        ['bb', "bb"],
+        
+        ["abcba", "abcba"],
+        
+        ["eabcb", "bcb"],
+        
+        ["mqizdjrfqtmcsruvvlhdgzfrmxgmmbguroxcbhalzggxhzwfznfkrdwsvzhieqvsrbyedqxwmnvovvnesphgddoikfwuujrhxwcrbttfbmlayrlmpromlzwzrkjkzdvdkpqtbzszrngczvgspzpfnvwuifzjdrmwfadophxscxtbavrhfkadhxrmvlmofbzqshqxazzwjextdpuszwgrxirmmlqitjjpijptmqfbggkwaolpbdglmsvlwdummsrdyjhmgrasrblpjsrpkkgknsucsshjuxunqiouzrdwwooxclutkrujpfebjpoodvhknayilcxjrvnykfjhvsikjabsdnvgguoiyldshbsmsrrlwmkfmyjbbsylhrusubcglaemnurpuvlyyknbqelmkkyamrcmjbncpafchacckhymtasylyfjuribqxsekbjkgzrvzjmjkquxfwopsbjudggnfbuyyfizefgxamocxjgkwxidkgursrcsjwwyeiymoafgyjlhtcdkgrikzzlenqgtdukivvdsalepyvehaklejxxmmoycrtsvzugudwirgywvsxqapxyjedbdhvkkvrxxsgifcldkspgdnjnnzfalaslwqfylmzvbxuscatomnmgarkvuccblpoktlpnazyeazhfucmfpalbujhzbykdgcirnqivdwxnnuznrwdjslwdwgpvjehqcbtjljnxsebtqujhmteknbinrloregnphwhnfidfsqdtaexencwzszlpmxjicoduejjomqzsmrgdgvlrfcrbyfutidkryspmoyzlgfltclmhaeebfbunrwqytzhuxghxkfwtjrfyxavcjwnvbaydjnarrhiyjavlmfsstewtxrcifcllnugldnfyswnsewqwnvbgtatccfeqyjgqbnufwttaokibyrldhoniwqsflvlwnjmffoirzmoxqxunkuepj",
+        "vkkv"],
+        
+        ["ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi",
+        "ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi"]
+    ]
+    for input, res in tests:
+        test_driver(s.longestPalindrome, input, expected=res)

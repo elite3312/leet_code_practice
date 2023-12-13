@@ -1,48 +1,144 @@
 from utils.test_driver import test_driver
-from cmath import inf
+
+
 class Solution:
-    def coinChange(self, coins: list[int], amount: int) -> int:
-        if amount==0:return 0
-        n=len(coins)
-        
-        dp=[[0 for _ in range(amount+1)]for _ in range(n)]#dp[r,c]=min coins using 1st r coins to create amount c
 
-        for j in range(amount+1):
-            dp[0][j]=inf if j %coins[0]!=0 else j//coins[0]
-        for i in range(1,n):
-            for j in range(1,amount+1):
-                if coins[i]<=j:
-                    dp[i][j]=min(dp[i-1][j],dp[i][j-coins[i]]+1)
-                else:
-                    dp[i][j]=dp[i-1][j]
-        curr_min=inf
+    def longestPalindrome_TLE(self, s: str) -> str:
+        dp = dict()  # dp[i,j]=true if si...sj is palindrome
+        n = len(s)
+
+        # set base case of len 1 and 2
         for i in range(n):
-            curr_min=min(curr_min,dp[i][amount])
-        return -1 if curr_min==inf else curr_min
+            dp[i, i] = True
 
-# idea: use a 2D dp.
-# dp[i][j]=minimum coins needed to sum to amount j using first 1 coins.
-# dp[i][j]=min(dp[i-1][j],dp[i][j-coins[i]]+1), provided j-coins[i] >=0.
-# we fill up the table like this:
-#       0 1 2 3 4 5 6 7 8
-# [1] 0 0 1 2 3 4 5 6 7 8
-# [2] 1 0 1 1 2 ...
-# [5] 2 
-#
-# note that for each dp[i]. dp[i][0]=0, since we need 0 coins to create value 0
+            if i > n-2:
+                continue
+            if s[i] == s[i+1]:
+                dp[i, i+1] = True
+
+            else:
+                dp[i, i+1] = False
+        for j_offset in range(2, n):
+            for i in range(0, n-j_offset):
+                if dp[i+1, (i+j_offset)-1]:
+                    if s[i] == s[i+j_offset]:
+                        dp[i, i+j_offset] = True
+
+                    else:
+                        dp[i, i+j_offset] = False
+                else:
+                    dp[i, i+j_offset] = False
+        res = ''
+        for key in dp:
+            if dp[key]:
+                if key[1]-key[0]+1 > len(res):
+                    res = s[key[0]:key[1]+1]
+
+        return res
+
+    # n^2
+    def longestPalindrome_dp_n_square(self, s: str) -> str:
+        dp = [[False]*len(s) for _ in range(len(s))]
+        n = len(s)
+
+        # set base case of len 1 and 2
+        for i in range(n):
+            dp[i][i] = True
+
+            if i > n-2:
+                continue
+            if s[i] == s[i+1]:
+                dp[i][i+1] = True
+
+            else:
+                dp[i][i+1] = False
+        for j_offset in range(2, n):
+            for i in range(0, n-j_offset):
+                if dp[i+1][(i+j_offset)-1]:
+                    if s[i] == s[i+j_offset]:
+                        dp[i][i+j_offset] = True
+
+                    else:
+                        dp[i][i+j_offset] = False
+                else:
+                    dp[i][i+j_offset] = False
+        res = ''
+        for i in range(n):
+            for j in range(n):
+                if dp[i][j]:
+                    if j-i+1 > len(res):
+                        res = s[i:j+1]
+
+        return res
+
+    # manacher
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        # base case
+        if n <= 1:
+            return s
+        s = "#"+"#".join(s)+"#"
+
+        # dp[i]=the diameter of the palinedrome string centered at i. Initially set to 1, since avery char is a plindrome
+        dp = [1 for _ in s]
+        max_right_center = -1
+        # this is quite important. this represents the center of "the palinedrome 
+        # that achieves the rightmost bound"
+        max_right = -1# the rightmost bound of palinedrome substr
+        n = len(s)
+        # iterate thru every center in s
+        for center in range(n):  # i is the curr center of the s
+
+            # if it is possible to copy the palinedrom diameters from the mirrored index
+            if max_right_center-(center-max_right_center) >= 0:
+                dp[center] = min(# if center + copied diamter exceeds right bound, 
+                    # we can only increae the diameter to touch the right bound. 
+                    # The reason is that we cannot be sure that substrings centered 
+                    # at 'center' with  diameter that exceeds right bound is palinedrome
+                    dp[max_right_center-(center-max_right_center)], max_right-center)
+
+            # expand the substring centered at 'center', starting with diameter=dp[center]
+            while center-dp[center] >= 0 and center+dp[center] < n and s[center-dp[center]] == s[center+dp[center]]:
+                dp[center] += 1
+
+            # update max_right and max_right_center
+            if center+dp[center] > max_right:
+                max_right = min(center+dp[center], n)
+                max_right_center = center
+
+        # extract res
+        max_dp = -1
+        max_dp_index = -1
+        for i, v in enumerate(dp):
+            if max_dp < v:
+                max_dp = v
+                max_dp_index = i
+
+        res=s[max_dp_index-max_dp+1:max_dp_index+max_dp]
+        res=res.replace("#",'')
+        return res
 
 
-
-        
 if __name__ == "__main__":
-    s=Solution()
-    tests=[
-        [[[1,2,5],100],20],
-        [[[1,2147483647],2],2],
-        [[[186,419,83,408],6249],20],
-        [[[2],3],-1],
-        [[[1,2,5],11],3],
-        [[[1],0],0],
+    s = Solution()
+
+    tests = [
+        ["abac", "aba"],
+        ["babad", "bab"],
+        
+        ["cbbd", "bb"],
+        
+        ['bb', "bb"],
+        
+        ["abcba", "abcba"],
+        
+        ["eabcb", "bcb"],
+        
+        ["mqizdjrfqtmcsruvvlhdgzfrmxgmmbguroxcbhalzggxhzwfznfkrdwsvzhieqvsrbyedqxwmnvovvnesphgddoikfwuujrhxwcrbttfbmlayrlmpromlzwzrkjkzdvdkpqtbzszrngczvgspzpfnvwuifzjdrmwfadophxscxtbavrhfkadhxrmvlmofbzqshqxazzwjextdpuszwgrxirmmlqitjjpijptmqfbggkwaolpbdglmsvlwdummsrdyjhmgrasrblpjsrpkkgknsucsshjuxunqiouzrdwwooxclutkrujpfebjpoodvhknayilcxjrvnykfjhvsikjabsdnvgguoiyldshbsmsrrlwmkfmyjbbsylhrusubcglaemnurpuvlyyknbqelmkkyamrcmjbncpafchacckhymtasylyfjuribqxsekbjkgzrvzjmjkquxfwopsbjudggnfbuyyfizefgxamocxjgkwxidkgursrcsjwwyeiymoafgyjlhtcdkgrikzzlenqgtdukivvdsalepyvehaklejxxmmoycrtsvzugudwirgywvsxqapxyjedbdhvkkvrxxsgifcldkspgdnjnnzfalaslwqfylmzvbxuscatomnmgarkvuccblpoktlpnazyeazhfucmfpalbujhzbykdgcirnqivdwxnnuznrwdjslwdwgpvjehqcbtjljnxsebtqujhmteknbinrloregnphwhnfidfsqdtaexencwzszlpmxjicoduejjomqzsmrgdgvlrfcrbyfutidkryspmoyzlgfltclmhaeebfbunrwqytzhuxghxkfwtjrfyxavcjwnvbaydjnarrhiyjavlmfsstewtxrcifcllnugldnfyswnsewqwnvbgtatccfeqyjgqbnufwttaokibyrldhoniwqsflvlwnjmffoirzmoxqxunkuepj",
+        "vkkv"],
+        
+        ["ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi",
+        "ibawpzhrunsgfobmenlqlxnprtgijgbeicsuoihnmcekzmvtffmlpzuwlimuuzjhkzppmpqqrfwyrjrsltkypjpcjffpvhtdiwjdonutobpecsiqubiusvwsyhrddqjeqqpgofifmwvmcdjixjvjxrvyabqaqumfqiiqxizmhzevhxutsbgzcfggyyvolwaxfcpjhfpksxvgyxhddcssnxhygzvmyxrxqizzhpluxkautjmieximoskcffimctsfzgmihtoxkltopwobtfjvjymtuknxmsgevkeklprcaudidywwkfuhtatpeeiewczpwiegmpjquayfleczrvzekikbaeocpcurtxhcsysbbsyschxtrucpcoeabkikezvrzcelfyauqjpmgeiwpzcweieeptathufkwwydiduacrplkekvegsmxnkutmyjvjftbowpotlkxothimgzfstcmiffcksomixeimjtuakxulphzziqxrxymvzgyhxnsscddhxygvxskpfhjpcfxawlovyyggfczgbstuxhvezhmzixqiiqfmuqaqbayvrxjvjxijdcmvwmfifogpqqejqddrhyswvsuibuqiscepbotunodjwidthvpffjcpjpyktlsrjrywfrqqpmppzkhjzuumilwuzplmfftvmzkecmnhiousciebgjigtrpnxlqlnembofgsnurhzpwabi"]
     ]
-    for a,b in tests:
-        test_driver(s.coinChange,a[0],a[1],expected=b)
+    for input, res in tests:
+        test_driver(s.longestPalindrome, input, expected=res)
