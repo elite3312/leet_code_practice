@@ -4,21 +4,27 @@ from utils.test_driver import test_driver
 
 class Solution:
     def placedCoins(self, edges: list[list[int]], cost: list[int]) -> list[int]:
-        n=len(edges)
+        n=len(cost)
+        n_edges=len(edges)
         res=[1 for _ in range(n)]
 
-        parent=[[i for i in range(n)]]
+        children=[[] for i in range(n)]
         
-        def find(x):
-            if parent[x]==x:return x
-            parent[x]=find(parent[x])
-            return parent[x]
-        def union(a,b):
-            a=find(a)
-            b=find(b)
-            if a!=b:
-                parent[b]=a    
-                #parent[a]=b
+        # def find(x):
+        #     if parent[x]==x:return x
+        #     parent[x]=find(parent[x])
+        #     return parent[x]
+        # def union(a,b):
+        #     a=find(a)
+        #     b=find(b)
+        #     if a!=b:
+        #         parent[b]=a    
+        #         #parent[a]=b
+        for e in edges:
+            #curr=n-1-i
+            children[e[0]].append(e[1])
+
+        
         
 
                     
