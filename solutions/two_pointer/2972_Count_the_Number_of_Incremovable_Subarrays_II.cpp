@@ -68,3 +68,12 @@ public:
         
     }
 };
+
+/*
+idea:
+First divide array into left strictly increasing array + stuff from middle + right strictly increasing array
+case 1: count possible increasing subarrays that can be formed from left array(by removing all remainging elements)
+case 2: count possible increasing subarrays that can be formed from right array(by removing all remainging elements)
+case 3: count possible increasing subarrays that can be formed from left array+right array(by removing all remainging elements)
+case 4:add 1 for entire array
+*/
