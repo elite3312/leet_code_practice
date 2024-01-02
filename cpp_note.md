@@ -38,4 +38,6 @@ unordered_set<int> s
 //priority_queue
 priority_queue<int> q
 
+//pair
+pair<int, std::string> pair1(100, "Tom");
 ```
