@@ -3,9 +3,11 @@
 ## STL
 
 ```cpp
+#include <vector>
+using namespace std;
 //vector
-vector<int>
-vector<vector<int>>arr(n, vetor<int>(m, 0))
+vector<int> a ;
+vector<vector<int>>a(n, vector<int>(m, 0));
 n * m
 vector<Node*>
 arr.resize(n, vector<int>(m, 0))
