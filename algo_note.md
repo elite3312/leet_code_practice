@@ -43,3 +43,47 @@ int binarySearch(int arr[], int l, int r, int x)
     return -1;
 }
 ```
+
+### bfs
+
+```cpp
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+void levelOrderTraversal(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    std::queue<TreeNode*> q;
+    q.push(root);
+    int depth = 0;  // Variable to keep track of the current depth
+
+    while (!q.empty()) {
+        int size = q.size();  // Number of nodes at the current level
+
+        for (int i = 0; i < size; ++i) {
+            TreeNode* current = q.front();
+            q.pop();
+
+            // Process the current node
+            std::cout << "Node: " << current->data << ", Depth: " << depth << std::endl;
+
+            // Enqueue the children for the next level
+            if (current->left) {
+                q.push(current->left);
+            }
+            if (current->right) {
+                q.push(current->right);
+            }
+        }
+
+        // Move to the next level
+        ++depth;
+    }
+}
+```

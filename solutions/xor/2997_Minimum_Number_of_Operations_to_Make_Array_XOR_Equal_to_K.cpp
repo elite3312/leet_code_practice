@@ -14,27 +14,29 @@ using namespace std;
 
 class Solution {
 public:
-    int res=0,low,high;
-    int rangeSumBST(TreeNode* root, int low, int high) {
-		this->low=low;
-		this->high=high;
-		inorder(root);
+    int minOperations(vector<int>& nums, int k) {
+        int cur=nums[0];
+		for(int i =1;i<nums.size();i++)cur^=nums[i];
+		cur^=k;
+		int res=0;
+		while (cur){
+			if (cur&1)res+=1;
+			cur>>=1;
+		}
 		return res;
     }
-	void inorder(TreeNode* cur){
-		if (cur==NULL)return;
-		inorder(cur->left);
-		if(cur->val<=high && cur->val>=low)res+=cur->val;
-		inorder(cur->right);
-	}
+
 };
 /**copy to here**/
 int main()
 {
 	Solution *s = new Solution();
-	
+	vector <int>nums={2,1,3,4};int k=1;
+	cout<<s->minOperations(nums,k);//2
 	return 0;
 }
 
 /*idea
+bitwise xor will leave bits with odd number of 1s as 1, and 
+bits with even number of 1s as 0
 */
