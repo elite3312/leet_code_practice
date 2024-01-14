@@ -25,6 +25,12 @@
                 }
             ],
             "preLaunchTask": "C/C++: g++.exe 建置使用中檔案"
+        },
+        {
+            "name": "Python Debugger: Python File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}"
         }
     ],
     "version": "2.0.0"
