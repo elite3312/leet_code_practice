@@ -1,7 +1,11 @@
+from time import time 
 def test_driver(main, *inputs, expected: any):
+    s_t=time()
     # change this line
     print('------------------')
     ans = main(*inputs)
+    e_t=time()
+    print('%f'%(e_t-s_t),end=', ')
     if ans==expected:
         print('pass')
         return
