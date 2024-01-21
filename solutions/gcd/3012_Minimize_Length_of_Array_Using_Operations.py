@@ -2,35 +2,16 @@ from utils.test_driver import test_driver
 
 from collections import Counter
 class Solution:
+   
     def minimumArrayLength(self, nums: list[int]) -> int:
-        c=Counter()
-        for n in nums:
-            c[n]+=1
-        sorted_keys=sorted(list(c.keys()))
+        nums.sort()
         
-        l=[]
-        for k in sorted_keys:
-            l.append((k,c[k]))
-        while 1:
-            if len(l)>2:
-                _,top_count=l[-1]
-                _,sec_top_count=l[-2]
-                remain_index=-1
-                new_count=abs(top_count-sec_top_count)
-                if top_count>sec_top_count:
-                    remain_index=-2
-                _=l[remain_index]
-                l=l[:len(l)-2]
-                l.append(_)
-
-
-
-            else:
-                if l[0][1]==l[1][1]:return 1
-                else:
-                    if abs(l[0][1]-l[1][1])==1:return 1
-                    elif abs(l[0][1]-l[1][1])%2==1:return 2
-                    else :return 1
+        cnt = 1
+        for num in nums[1:]:
+            if num == nums[0]: cnt += 1
+            else: 
+                if num % nums[0] != 0: return 1
+        return (cnt+1)//2
 
 
 
