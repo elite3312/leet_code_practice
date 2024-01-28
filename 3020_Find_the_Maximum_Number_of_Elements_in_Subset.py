@@ -11,11 +11,12 @@ class Solution:
         ctr=Counter()
         for num in nums:
             ctr[num] +=1
-            
+        if len(ctr)==1:
+            if ctr[1]%2==1:return ctr[1]
+            else :return ctr[1]-1
         res=0
         for k in ctr.keys():
             if k ==1 :continue# number 1 cannot be center
-            #prev=k
             _res=1
             k=sqrt(k)
 
@@ -23,7 +24,9 @@ class Solution:
                 _res+=2
                 k=sqrt(k)
             res=max(res,_res)
-        return res
+        res_=ctr[1]
+        if res_%2==0:res_-=1
+        return max(res,res_)
 
 
 
@@ -61,3 +64,10 @@ if __name__ == "__main__":
     ]
     for input, res in tests:
         test_driver(s.maximumLength, input[0],  expected=res)
+'''
+1 use counter to count occurences
+2 iterate thru the key of the counter
+  while counter[key]>=2
+    res+=2
+    key=sqrt(key)
+'''
