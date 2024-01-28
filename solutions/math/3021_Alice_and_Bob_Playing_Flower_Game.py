@@ -136,7 +136,7 @@ if __name__ == "__main__":
 '''
 o(1)
 1 alice will win if the (x+y) mod 2 ==1
-2 inorder for x+y to be odd, either (x is odd and y is even) or (x is even and y is odd) 
+2 in order for x+y to be odd, either (x is odd and y is even) or (x is even and y is odd) 
 3 use o(1) to find the number of even or odd number less than or eual to x and do the same for y.
 4. res= n_odd*m_even+n_even*m_odd 
 '''
