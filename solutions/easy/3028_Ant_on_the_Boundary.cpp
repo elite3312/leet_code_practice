@@ -14,16 +14,31 @@ using namespace std;
 /**copy from here**/
 class Solution {
 public:
-    int countKeyChanges(string s) {
-        
-		return 0;
+    int returnToBoundaryCount(vector<int>& nums) {
+        int res=0,first=0;
+		int cur=0;
+		for (auto num : nums){
+			cur+=num;
+			if (first){
+				first=0;
+				continue;
+			}
+			if (cur==0)res++;
+		}
+		return res;
     }
 };
 /**copy to here**/
 int main()
 {
 	Solution *s = new Solution();
-	
+	vector<int> nums;
+
+	nums={3,2,-3,-4};
+	cout<<s->returnToBoundaryCount(nums);//0
+
+	nums={2,3,-5};
+	cout<<s->returnToBoundaryCount(nums);//1
 
 	
 
