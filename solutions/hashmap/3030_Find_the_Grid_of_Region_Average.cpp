@@ -19,8 +19,8 @@ public:
         map<pair<int,int>,pair<int,int>>m;
         for(int i=0;i<r-2;i++) {
             for(int j=0;j<c-2;j++) {
-                int s=0;
-                int f=0;
+                int s=0;//sum
+                int f=0;//failed condition
                 for(int x=i;x<i+3;x++) {
                     for(int y=j;y<j+3;y++) {
                         s=s+v[x][y];
@@ -49,10 +49,10 @@ public:
                     for(int y=j;y<j+3;y++) {
                         if(m.find({x,y})!=m.end()) {
                             pair<int,int>p=m[{x,y}];
-                            m[{x,y}]={p.first+s,p.second+1};
+                            m[{x,y}]={p.first+s,p.second+1};//sum+s,count++
                         }
                         else {
-                            m[{x,y}]={s,1};
+                            m[{x,y}]={s,1};//sum,count=1
                         }
                         
                     }

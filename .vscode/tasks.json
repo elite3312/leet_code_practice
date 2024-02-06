@@ -9,7 +9,7 @@
                 "-g",
                 "${file}",
                 "./utils/linked_list.cpp",
-                "./utils/printer.cpp",
+                "./utils/vector_utils.cpp",
                 "./utils/binary_tree.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"

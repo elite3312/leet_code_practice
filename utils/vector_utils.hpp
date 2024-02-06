@@ -1,8 +1,8 @@
-#ifndef PRINTER_HPP
-#define PRINTER_HPP
+#ifndef VECTOR_UTILS_HPP
+#define VECTOR_UTILS_HPP
 #include <vector>
 using namespace std;
-namespace printer
+namespace vector_utils
 {
 
     void print_2dvector(const vector<vector<int>>&vec);
@@ -10,4 +10,4 @@ namespace printer
    
 
 }
-#endif // PRINTER_HPP
+#endif // VECTOR_UTILS_HPP

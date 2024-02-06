@@ -74,3 +74,11 @@ priority_queue<int> q
 ```cpp
 pair<int, string> pair1(100, "Tom");
 ```
+
+### 2d array
+
+```cpp
+int arr[10][20] = {0};  // easier way
+// this does the same
+memset(arr, 0, sizeof arr); 
+```
