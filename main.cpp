@@ -14,20 +14,13 @@ using namespace std;
 /**copy from here**/
 class Solution {
 public:
-    int countKeyChanges(string s) {
-        
-		return 0;
-    }
+    
 };
 /**copy to here**/
 int main()
 {
 	Solution *s = new Solution();
-	
 
-	
-
-	
 	return 0;
 }
 
