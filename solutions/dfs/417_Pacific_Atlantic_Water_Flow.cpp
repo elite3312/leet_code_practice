@@ -13,16 +13,16 @@
 using namespace binary_tree;
 using namespace std;
 /**copy from here**/
+
 class Solution
 {
 public:
-	
 	int m, n;
 	vector<vector<int>> pacificAtlantic(vector<vector<int>> &grid)
 	{
 		bool visited[200][200];
-		bool mem[200][200]={false};
-	
+		bool mem[200][200] = {false};
+
 		m = grid.size();
 		n = grid[0].size();
 
@@ -32,6 +32,7 @@ public:
 		{
 			for (int j = 0; j < n; j++)
 			{
+
 				bool i_j_is_true = false;
 				if (mem[i][j] == true ||
 					i == 0 && j == (n - 1) ||
@@ -41,11 +42,10 @@ public:
 				if (!i_j_is_true)
 				{
 
-					memset(visited, false, sizeof(visited)); 
-					auto ans = dfs(grid,mem,visited,i, j);
+					memset(visited, false, sizeof(visited));
+					auto ans = dfs(grid, mem, visited, i, j);
 					if (ans.first && ans.second)
 						i_j_is_true = true;
-					
 				}
 				if (i_j_is_true)
 				{
@@ -56,8 +56,11 @@ public:
 		}
 		return res;
 	}
-	pair<bool, bool> dfs(vector<vector<int>> &grid,bool mem[200][200],bool visited[200][200],int r, int c)
+	pair<bool, bool> dfs(vector<vector<int>> &grid, bool mem[200][200], bool visited[200][200], int r, int c)
 	{
+
+		if (mem[r][c])
+			return {true, true};
 		bool pacific = false;
 		if (r == 0 || c == 0)
 			pacific = true;
@@ -75,9 +78,9 @@ public:
 		vector<pair<int, int>> nexts = {{r - 1, c}, {r, c - 1}, {r + 1, c}, {r, c + 1}};
 		for (auto p : nexts)
 		{
-			if ( !(p.first < 0 || p.second < 0 || p.first >= m || p.second >= n) && !visited[p.first][p.second] && grid[p.first][p.second] <= grid[r][c])
+			if (!(p.first < 0 || p.second < 0 || p.first >= m || p.second >= n) && !visited[p.first][p.second] && grid[p.first][p.second] <= grid[r][c])
 			{
-				auto ans = dfs(grid,mem,visited,p.first, p.second);
+				auto ans = dfs(grid, mem, visited, p.first, p.second);
 				if (ans.first)
 					pacific = true;
 				if (ans.second)
@@ -88,7 +91,6 @@ public:
 			mem[r][c] = true;
 		return {pacific, atlantic};
 	}
-	
 };
 /**copy to here**/
 int main()
