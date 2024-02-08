@@ -20,7 +20,7 @@ public:
 int main()
 {
 	Solution *s = new Solution();
-
+	cout<<"123456";
 	return 0;
 }
 

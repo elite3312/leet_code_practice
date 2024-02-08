@@ -6,8 +6,8 @@ namespace linked_list
     {
         int val;
         ListNode *next;
-        ListNode() : val(0), next(nullptr) {}
-        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode() : val(0), next(0) {}
+        ListNode(int x) : val(x), next(0) {}
         ListNode(int x, ListNode *next) : val(x), next(next) {}
     };
     void print_list(ListNode *head);

@@ -130,4 +130,5 @@ dmypy.json
 
 debug
 *.exe
+*.dSYM
 #.vscode
