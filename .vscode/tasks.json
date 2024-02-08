@@ -32,6 +32,9 @@
                 "-fansi-escape-codes",
                 "-g",
                 "${file}",
+                "./utils/linked_list.cpp",
+                "./utils/vector_utils.cpp",
+                "./utils/binary_tree.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
