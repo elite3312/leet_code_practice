@@ -9,7 +9,6 @@
 #include <cstring>
 #include <math.h>
 #include <map>
-using namespace binary_tree;
 using namespace std;
 /**copy from here**/
 class Solution {
