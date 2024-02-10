@@ -82,3 +82,22 @@ int arr[10][20] = {0};  // easier way
 // this does the same
 memset(arr, 0, sizeof arr); 
 ```
+
+### sort with custom compare
+
+```cpp
+bool myComparison(const pair<int,int> &a,const pair<int,int> &b)
+{
+       return a.first<b.first;
+}
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int> >& intervals) {
+        vector<pair<int,int>>v;
+        for (auto e:intervals){
+            v.push_back({e[0],e[1]});}
+        sort(v.begin(),v.end(),myComparison);
+        return 0;
+    }
+};
+```
