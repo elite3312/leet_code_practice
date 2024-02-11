@@ -16,6 +16,7 @@ using namespace binary_tree;
 class Solution {
 public:
 	bool dfs(TreeNode* root,TreeNode* subRoot){
+		/*checks whether root and subRoot produces a similar tree structure*/
 		if (root==NULL &&subRoot==NULL)return true;
 		if (root==NULL &&subRoot!=NULL)return false;
 		if (root!=NULL &&subRoot==NULL)return false;
@@ -27,6 +28,7 @@ public:
 		return left&&right;
 	}
     bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+		//for each node of tree rooted at root, call dfs
         if (!root)return false;
 		
 		bool res=false;
