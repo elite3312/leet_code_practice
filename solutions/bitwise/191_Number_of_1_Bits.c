@@ -7,7 +7,7 @@ int hammingWeight(short int n) {
     int res=0;
     int bit_size=sizeof(n)*8;
     while(bit_size){
-        if(n%2)res++;
+        if(n&1)res++;
         n>>=1;
         bit_size--;
     }
