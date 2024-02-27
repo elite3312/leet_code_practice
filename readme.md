@@ -17,3 +17,9 @@ python3 remove_all_exe.py
 #probe if solution for problem exists
 python3 search_sol.py pacific
 ```
+
+## gdb
+
+```sh
+> & "C:\\msys64\\ucrt64\\bin\\gdb.exe" .\main.exe
+```
