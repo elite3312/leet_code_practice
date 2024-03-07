@@ -1,5 +1,5 @@
-#include "utils/linked_list.hpp"
-#include "utils/binary_tree.hpp"
+//#include "utils/linked_list.hpp"
+//#include "utils/binary_tree.hpp"
 #include <iostream>
 #include <queue>
 #include <string>
@@ -10,46 +10,66 @@
 #include <math.h>
 #include <map>
 using namespace std;
-using namespace binary_tree;
+
 /**copy from here**/
 
+const int  base=23,mod=1e7+7;
 class Solution {
 public:
     string shortestPalindrome(string s) {
-
-		/*find pal*/
-		int  base=23,mod=1e7+7;
-
+		/*first find longest Palindrome in s*/
 		int n = s.length();
-		vector<int> power(n + 1, 1);
+		vector<int> power(n, 1);
+		
 		// Precompute the powers of the base modulo the mod
-		for (int i = 1; i <= n; i++) {
+		for (int i = 1; i < n; i++) {
 			power[i] = (power[i - 1] * base) % mod;
 		}
+		
+		//compute forward_hash and backward_hash for entire string
+		int forward_hash=0,backward_hash=0;
+        for (int i =0; i < n; i++) {
+			forward_hash*=power[i];
+			backward_hash*=power[i];
 
-        /*compute hash for s*/
-		int hash=0,
-			hash_rev=0;
-		for(int i=0;i<n;i++){
-			/*compare hash value for window*/
-			hash=(hash+power[n-1-i]*s[i])%mod;
-			hash_rev=(hash_rev+power[i]*s[i])%mod;
+			forward_hash+=int(s[i]);
+			backward_hash+=int(s[n-1-i]);
+
+			forward_hash%=mod;
+			backward_hash%=mod;
+
+			cout << forward_hash << ' ';
+			cout << backward_hash << ' ';
 		}
 
-		int longest_paline_right=0;
-		for(int i=n-1;i>=0;i--){
-			if (hash==hash_rev){longest_paline_right=i;break;}
-			hash=(hash-power[n-1-i]*s[i])%mod;
-			hash_rev=(hash_rev-power[i]*s[i])%mod;
+		//find largest i such that s[0:i+1] and s[n-1-i:n+1] have the same forward and backward hash
+		int i=n-1;
+		while (i){
+			if (forward_hash==backward_hash)break;
+
+			forward_hash-=int(s[i]);
+			forward_hash/=power[i];
+			backward_hash-=int(s[i]);
+			backward_hash/=power[n-1-i];
+
+			forward_hash%=mod;
+			backward_hash%=mod;
 		}
-		return s.substr(0,longest_paline_right+1);
+
+		
+		return s.substr(0,i+1);
     }
 };
 /**copy to here**/
 int main()
 {
 	Solution *sol = new Solution();
-	string s ="ababa";
+	string s;
+
+	s ="abaca";
+	cout<<sol->shortestPalindrome(s);
+
+	s ="ababa";
 	cout<<sol->shortestPalindrome(s);
     return 0;
 }
