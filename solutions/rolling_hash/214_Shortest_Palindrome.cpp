@@ -27,6 +27,21 @@ class Solution {
 public:
     string shortestPalindrome(string s) {
 		/*first find longest Palindrome in s*/
+		/*we do so by rolling hash:
+		forward_hashs=[s[0]*pow[0],
+					   s[0]*pow[0]+s[1]*pow[1],
+					   ...,
+					   s[n-1]*pow[n-1]+s[n-1]*pow[n-1],
+					 =[s[0]*pow[0],
+					  forward_hashs[0]+s[1]*pow[1],
+					   ...,
+					   forward_hashs[n-2]+s[n-1]*pow[n-1],
+		
+		backward_hashs=[s[0]*pow[0],
+					   forward_hashs[0]*base+s[1],
+					   ...,
+					   forward_hashs[n-2]*base+s[n-1],
+		*/
 		int n = s.length();
 		if(n==0||n==1)return s;
 		vector<int> power(n, 1);
@@ -36,7 +51,7 @@ public:
 			power[i] = (power[i - 1] * base) % mod;
 		}
 		//power=1,base,base^2...base^(n-1)
-		
+
 		//compute forward_hashs and backward hashes
 
 		vector<long long> forward_hashs(n, 0);
