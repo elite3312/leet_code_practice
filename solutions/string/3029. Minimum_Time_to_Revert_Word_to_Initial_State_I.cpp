@@ -1,5 +1,4 @@
-#include "utils/linked_list.hpp"
-#include "utils/binary_tree.hpp"
+
 #include <iostream>
 #include <queue>
 #include <string>
@@ -9,23 +8,31 @@
 #include <cstring>
 #include <math.h>
 #include <map>
-using namespace binary_tree;
 using namespace std;
 /**copy from here**/
 class Solution {
 public:
+	bool starts_with(string word,int remaining_right_chars_ptr){
+		int res=true,n=word.size();
+		int substr_size=n-remaining_right_chars_ptr;
+		int j=remaining_right_chars_ptr;
+		for(int i=0;i<substr_size;i++){
+			if(word[i]!=word[j++])return false;
+		}
+		return res;
+	}
     int minimumTimeToInitialState(string word, int k) {
-		int res=0;
+		int res=0,n=word.size();
 		
-		string remaining_right_chars=word;
+		int remaining_right_chars_ptr=0;
 		do{
 			res++;
-			if (remaining_right_chars.size()>=k)
-				remaining_right_chars=remaining_right_chars.substr(k);
+			if ((n-1-remaining_right_chars_ptr)>=k)
+				remaining_right_chars_ptr+=k;
 			else break;
 			
 		}
-		while (word.find(remaining_right_chars)!=0);
+		while (starts_with(word,remaining_right_chars_ptr)==false);
 		
 		return res;
     }
