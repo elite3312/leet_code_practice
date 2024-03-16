@@ -11,5 +11,5 @@ def test_driver(main, *inputs, expected: any):
         return
     for i in range(len(inputs)):
         print('input_%d : %s'%(i,str(inputs[i])))
-    print("ans: ", ans)
-    print('expected:', expected)
+    print("ans     : ", ans)
+    print('expected: ', expected)
