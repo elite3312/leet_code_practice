@@ -27,7 +27,7 @@ class Solution:
                 temp.append(h[0][1])
                 h[0][0]+=1
                 heapq.heapify(h)
-                
+        temp.sort()
         res=[]
         i=0
         for c in s:
