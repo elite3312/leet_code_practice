@@ -3,7 +3,7 @@ from utils.test_driver import test_driver
 '''
 idea
 sort by val while preserving index
-then take k unmarker items each turn
+then take k unmarked items each turn
 use hashmap to track marked items'''
 class Solution:
     def unmarkedSumArray(self, nums: list[int], queries: list[list[int]]) -> list[int]:

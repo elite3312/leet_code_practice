@@ -1,5 +1,11 @@
 from utils.test_driver import test_driver
 import heapq
+'''
+idea
+first record counts for all chars
+then use a heap to maintain char with smallest count
+then sort the added chars
+then add to res'''
 class Solution:
     def minimizeStringValue(self, s: str) -> str:
 
