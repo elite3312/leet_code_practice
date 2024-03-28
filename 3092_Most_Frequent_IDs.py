@@ -1,39 +1,19 @@
 from utils.test_driver import test_driver
 
-import heapq
-
-
-class CustomItem:
-    def __init__(self, priority:list, value):
-        self.priority = priority
-        self.value = value
-
-    def __lt__(self, other):
-        return self.priority[0] >= other.priority[0]
-    
+from collections import Counter
+from heapq import heappop,heappush
 class Solution:
     def mostFrequentIDs(self, nums: list[int], freq: list[int]) -> list[int]:
-        cnter=dict()
-        l=[]#(obj(cnt),val)
-        n=len(nums)
-
-        res=[]
-        
-        for i in range(n):
-            is_first_time_2_add=False
-            if cnter.get(nums[i])==None:
-                cnter[nums[i]]=[0]
-                is_first_time_2_add=True
-
-            cnter[nums[i]][0]+=freq[i]
-            if cnter[nums[i]][0]<0:cnter[nums[i]][0]=0
-            
-            if is_first_time_2_add:
-                heapq.heappush(l,CustomItem(cnter[nums[i]],nums[i]))
-      
-            else:heapq.heapify(l)
-
-            res.append(l[0].priority[0])
+        h = []
+        count = Counter()
+        res = []
+        for i, f in zip(nums, freq):
+            count[i] += f
+            heappush(h, [-count[i], i])
+            #while heaptop' count[key] does not match the freq of heap top, pop from heap
+            while count[h[0][1]] != -h[0][0]:
+                heappop(h)
+            res.append(-h[0][0])
         return res
 
         
