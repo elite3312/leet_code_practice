@@ -4,13 +4,17 @@ from collections import Counter
 from heapq import heappop,heappush
 class Solution:
     def mostFrequentIDs(self, nums: list[int], freq: list[int]) -> list[int]:
-        h = []
+        h = []# a heap that stores (-key.count, key)
+        #we make the key with the largest count to be always on the top of the heap 
         count = Counter()
         res = []
         for i, f in zip(nums, freq):
             count[i] += f
             heappush(h, [-count[i], i])
-            #while heaptop' count[key] does not match the freq of heap top, pop from heap
+
+            #if heaptop.key.count does not match the freq of heap top, pop from heap
+            #then it must be that heaptop.key.count has been deducted. Thus heaptop at this point no longer 
+            # is the key with the largest count, We must pop it from the heap until this property holds again.
             while count[h[0][1]] != -h[0][0]:
                 heappop(h)
             res.append(-h[0][0])
