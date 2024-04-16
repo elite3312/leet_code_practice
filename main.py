@@ -10,23 +10,15 @@ class TreeNode:
         self.right = right
 
 
+
 class Solution:
-    def sumNumbers(self, root: TreeNode) -> int:
-        res = 0
-
-        def dfs(num: int, cur: TreeNode):
-            if cur==None:return
-
-            num *= 10
-            num += cur.val
-            if cur.left == None and cur.right == None: 
-                nonlocal res
-                res+= num
-            dfs(num, cur.left)
-            dfs(num, cur.right)
-        dfs(0, root)
-        return res
-
+    def addOneRow(self, root: TreeNode, val: int, depth: int) -> TreeNode:
+        def reach_certain_depth(root: TreeNode,depth:int):
+            cur_depth=0
+            q=[]
+            q.append(root)
+            while len(q):
+                cur_depth+=1
 
 if __name__ == "__main__":
     s = Solution()
