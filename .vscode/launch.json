@@ -47,7 +47,8 @@
             "name": "Python Debugger: Python File",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}"
+            "program": "${file}",
+            //"args": "-t py -f \"695. Max Area of Island\" "
         }
     ],
     "version": "2.0.0",

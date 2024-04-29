@@ -18,6 +18,12 @@ python3 remove_all_exe.py
 python3 search_sol.py pacific
 ```
 
+```sh
+#move file
+$f=1337. Its High Noon
+PS D:\git_repos\leet_code_practice> py .\move_file.py -t py -d -f $f   
+```
+
 ## gdb
 
 ```sh
