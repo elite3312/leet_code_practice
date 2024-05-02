@@ -2,15 +2,23 @@ try:
     from utils.test_driver import test_driver
 except:
     pass
-
-
+import heapq
 class Solution:
     def b(self, records) -> int:
-        x=(1,2e9)
-        y=(1,2e9)
+        a_max_temp=2e9+87
+        b_max_temp=2e9+87
 
         for r in records:
-            pass
+            if r[-1]==False:
+                a_max=r[0]+1
+                b_max=r[1]+1
+            else:
+                a_max_temp=min(a_max_temp,r[0])
+                b_max_temp=min(b_max_temp,r[1])
+        pass
+        res=[0]
+        return res
+
 
 
 if __name__ == "__main__":
