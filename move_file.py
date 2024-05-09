@@ -5,7 +5,7 @@ import os
 
 from search_sol import search_sol
 debug=False
-opts,args = getopt.getopt(sys.argv[1:], "t:df:", ["fileType", "debug", "fileName"])
+opts,args = getopt.getopt(sys.argv[1:], "t:df:h", ["fileType", "debug", "fileName","help"])
 for opt,arg in opts:
 	if opt in ("-t", "--fileType"):
 		file_type = arg
@@ -14,9 +14,13 @@ for opt,arg in opts:
 
 	elif opt in ("-f","--fileName"):
 		file_name=arg
+	elif opt in ("-h","--help"):
+		print('sample usage: py move_file.py -t py -d -f \'3075. Maximize Happiness of Selected Children\'')
+		sys.exit(0)
 	else:
 		print('Unknow Option')
-
+		print('sample usage: py move_file.py -t py -d -f \'3075. Maximize Happiness of Selected Children\'')
+		sys.exit(0)
 
 file_name=file_name.replace('_','')
 file_name=file_name.replace(' ','_')
