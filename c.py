@@ -1,8 +1,11 @@
 try:from utils.test_driver import test_driver
 except:pass
-
+'''
+* for wall
+. for space
+'''
 class Solution:
-    def venue_cleaning(self, n,m,map,rev) -> int:
+    def venue_cleaning(self, n,m,map) -> int:
         if map[0][0]=='*':return [-1,[]] 
         cur=(0,0)
 
@@ -10,13 +13,12 @@ class Solution:
                         (0,-1),#left
                         (1,0),#down
                         (0,1)]#right
-        if rev:
-            adjacent_cells.reverse()
+    
                      
         def is_valid(r,c):
             if  r<0 or c<0 or r>=n or c>=m:return False
-            if map[r][c]=='*':return False
-            return True
+            elif map[r][c]=='*':return False
+            else :return True
         
         stk=[cur]
         visited=[[False for _ in range(m)]for _ in range(n)]
