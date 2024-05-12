@@ -5,6 +5,7 @@ import os,sys
 def search_sol(sols_path,key):
     found_sol=False
     for f in os.listdir(sols_path):
+        if not os.path.isdir(os.path.join(sols_path,f)):continue
         for sol in os.listdir(os.path.join(sols_path,f)):
             if sol.find(key)>-1:
                 print('Found in %s'%f)
