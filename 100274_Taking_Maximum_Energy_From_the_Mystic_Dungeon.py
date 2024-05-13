@@ -6,8 +6,26 @@ class Solution:
     def maximumEnergy_dp(self, energy: list[int], k: int) -> int:
         n=len(energy)
         
-        dp=[[-1 for _ in range (n)]for _ in range (n)]
-    def maximumEnergy(self, energy: list[int], k: int) -> int:
+        '''dp approach
+        we partition enery into subsets using modular k
+        e.g. 
+               -9-2-6-5-8 3 0
+        index : 0 1 2 3 4 5 6, k=3
+        subset: 0 1 2 0 1 2 0
+        
+        maintain dp entries for each subset 
+            dp:-9-2-6-5-8 3 0 
+        '''
+
+        max_en_by_mod_k={}
+        for i in range(n):
+            if i<k:max_en_by_mod_k[i]=(energy[i],energy[i])#best accumulated value, cur accumulated value
+            else:
+                if energy[i]>max_en_by_mod_k[i%k] and :max_en_by_mod_k[i%k]=energy[i]
+                else:cur_accum=max_en_by_mod_k[i%k]+energy[i]
+                max_en_by_mod_k[i%k]=max(max_en_by_mod_k[i%k],cur_accum)
+        return max(max_en_by_mod_k)
+    def maximumEnergy_best_first_search(self, energy: list[int], k: int) -> int:
         
         n=len(energy)
         
@@ -62,13 +80,13 @@ if __name__ == "__main__":
             ],
             res
         ],
-        [#0
+        [#1
             [
              [-2,-3,-1], 2
             ],
             -1
         ],
-        [#0
+        [#2
             [
              [-9,-2,-6,-5,-8,3,0], 1
             ],
@@ -77,4 +95,4 @@ if __name__ == "__main__":
     ]
 
     for input, res in tests[index:]:
-        test_driver(sol.maximumEnergy, input[0],input[1], expected=res)
+        test_driver(sol.maximumEnergy_dp, input[0],input[1], expected=res)
