@@ -3,11 +3,14 @@ from utils.test_driver import test_driver
 
 class Solution:
     def findPermutationDifference(self, s: str, t: str) -> int:
+        '''
+        loop through each char in s, then find the same char in t and compute distance. Use a map to record visited chars in t.
+        '''
         taken_from_t={}
         n=len(t)
         for i in range(n):
             taken_from_t[i]=False 
-        m={}#maps s[i] to t[i] for i in range(n)
+        m={}
         for i in range(n):
             for j in range(n):
                 if taken_from_t[j]==False and t[j]==s[i]:
