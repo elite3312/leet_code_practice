@@ -9,12 +9,12 @@ class Solution:
         '''dp approach
         we partition enery into subsets using modular k
         e.g. 
-               -9-2-6-5-8 3 0
+                9-2-6-5-8 3 2
         index : 0 1 2 3 4 5 6, k=3
         subset: 0 1 2 0 1 2 0
         
         maintain dp entries for each subset 
-            dp:-9-2-6-5-8 3 0 
+            dp: 9-2-6 4-8 3 6
         '''
 
         max_en_by_mod_k={}
