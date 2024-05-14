@@ -14,17 +14,18 @@ class Solution:
         subset: 0 1 2 0 1 2 0
         
         maintain dp entries for each subset 
-            dp: 9-2-6 4-8 3 6
+                 0  1 2
+            dp: 6 -2 3
         '''
 
         max_en_by_mod_k={}
-        for i in range(n):
-            if i<k:max_en_by_mod_k[i]=(energy[i],energy[i])#best accumulated value, cur accumulated value
-            else:
-                if energy[i]>max_en_by_mod_k[i%k] and :max_en_by_mod_k[i%k]=energy[i]
-                else:cur_accum=max_en_by_mod_k[i%k]+energy[i]
-                max_en_by_mod_k[i%k]=max(max_en_by_mod_k[i%k],cur_accum)
-        return max(max_en_by_mod_k)
+        for i in range(k):max_en_by_mod_k[i]=energy[i]
+        for i in range(k,n):
+            #dp[i%k]    =        max(previous sum + current cell enery,discard previous sums and only retain current cell energy)
+            # remember that the sums must be consecutive! This is why we can simply discard the previous sums as well as add up energy to the previous sums.
+            max_en_by_mod_k[i%k]=max(max_en_by_mod_k[i%k]+energy[i],energy[i])
+        # return the maximum entry in the dictionary
+        return max([x[1] for x in max_en_by_mod_k.items()])
     def maximumEnergy_best_first_search(self, energy: list[int], k: int) -> int:
         
         n=len(energy)
