@@ -15,13 +15,12 @@ python3 remove_all_exe.py
 
 ```sh
 #probe if solution for problem exists
-python3 search_sol.py pacific
+python3 search_sol.py [keyword]
 ```
 
 ```sh
 #move file
-$f=1337. Its High Noon
-PS D:\git_repos\leet_code_practice> py .\move_file.py -t py -d -f $f   
+py move_file.py -t py -d -f '[1337. Its High Noon]'   
 ```
 
 ## gdb
