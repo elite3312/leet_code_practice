@@ -64,7 +64,7 @@ class Solution:
 if __name__ == "__main__":
     s = Solution()
 
-    submit=True
+    submit=False
     index=0
     
     if submit:
@@ -225,6 +225,5 @@ if __name__ == "__main__":
         )
         
         for input, res in tests[index:]:
-            if not  test_driver(s.venue_cleaning, input[0],input[1],input[2],False , expected=res):
-                print("attempting alternative")
-                test_driver(s.venue_cleaning, input[0],input[1],input[2],True,  expected=res)
+            
+            test_driver(s.venue_cleaning, input[0],input[1],input[2],  expected=res)

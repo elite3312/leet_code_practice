@@ -4,15 +4,13 @@ import sys
 import os
 
 
-opts, args = getopt.getopt(sys.argv[1:], "t:f:h", [
-                           "testCasesPath", "filepath", "help"])
+opts, args = getopt.getopt(sys.argv[1:], "f:h", [
+                          "filepath", "help"])
 for opt, arg in opts:
-    if opt in ("-t", "--testCasesPath"):
-        file_type = arg
-    elif opt in ("-f", "--filepath"):
+    if opt in ("-f", "--filepath"):
         file_name = arg
     elif opt in ("-h", "--help"):
-        print('sample usage: py code_force_auto_test.py -t py -f \'c.py\'')
+        print('sample usage: py code_force_auto_test.py -f \'123.py\'')
         sys.exit(0)
     else:
         print('Unknow Option')
