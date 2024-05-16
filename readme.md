@@ -19,8 +19,10 @@ python3 search_sol.py [keyword]
 ```
 
 ```sh
-#move file
+#move file, leetcode usage
 py move_file.py -t py -d -f '[1337. Its High Noon]'   
+#move file, code force usage
+py .\move_file.py -f '123' -m cf
 ```
 
 ## gdb
