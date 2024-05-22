@@ -65,6 +65,10 @@ if __name__ == "__main__":
         
     ]
 
+    fail_cnt=0
     for input, res in tests[index:]:
-        test_driver(sol.isArraySpecial, input[0],input[1], expected=res)
+        if not test_driver(sol.isArraySpecial, input[0],input[1], expected=res):
+            fail_cnt+=1
+    if fail_cnt>0:
+        print("%d tests failed"%fail_cnt)
 

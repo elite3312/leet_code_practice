@@ -10,7 +10,7 @@ def test_driver(main, *inputs, expected: any):
     print('%f'%(e_t-s_t),end=', ')
     if ans==expected:
         print(bcolors.OKGREEN+'passed'+bcolors.ENDC)
-        return
+        return True
     else:
         print(bcolors.FAIL+'failed'+bcolors.FAIL)
     
@@ -18,6 +18,7 @@ def test_driver(main, *inputs, expected: any):
         print(bcolors.WARNING+'input_%d : %s'%(i,str(inputs[i]))+bcolors.ENDC)
     print(bcolors.WARNING+"ans     : %s"%ans+bcolors.ENDC)
     print(bcolors.WARNING+'expected: %s'%expected+bcolors.ENDC)
+    return False
 
 def show_test_result(test_succeeded:list,test_inputs:list,test_outputs:list,verbose=False):
     # print test results

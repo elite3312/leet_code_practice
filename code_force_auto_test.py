@@ -2,7 +2,7 @@ import getopt
 import shutil
 import sys
 import os
-import tabulate
+
 import subprocess
 from utils.test_driver import show_test_result
 from utils.text_colors import bcolors
