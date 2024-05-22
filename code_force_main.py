@@ -1,5 +1,4 @@
-try:from utils.test_driver import test_driver
-except:pass
+# not solved, this is wrong
 '''
 * for wall
 . for space
@@ -61,169 +60,25 @@ class Solution:
         return [len(res_path), res_path]
 
         
+
 if __name__ == "__main__":
     s = Solution()
 
-    submit=False
     index=0
     
-    if submit:
-        n,m=str(input()).strip().split(' ')
-        n,m=int(n),int(m)
-        map=[]
-        for _ in range(n):
-            cur=str(input()).strip()
-            map.append(cur)
-        
+    
+    n,m=str(input()).strip().split(' ')
+    n,m=int(n),int(m)
+    map=[]
+    for _ in range(n):
+        cur=str(input()).strip()
+        map.append(cur)
+    
+    res,res_path=s.venue_cleaning(n,m,map)
+    if res==-1:
         res,res_path=s.venue_cleaning(n,m,map)
-        if res==-1:
-            res,res_path=s.venue_cleaning(n,m,map)
-        print(res)
-        if len(res_path)>0:
-            for _ in res_path:
-                print("%d %d"%(_[0],_[1]))
-    else:
-
-        tests = []
-        
-        # 0
-        n,m=3,4
-        map=["...*",
-             "*..." ,
-             "...."
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [12,[
-                    (1, 1),
-                    (1, 2),
-                    (2, 2),
-                    (3, 2),
-                    (3, 1),
-                    (3, 2),
-                    (3, 3),
-                    (2, 3),
-                    (1, 3),
-                    (2, 3),
-                    (2, 4),
-                    (3, 4),
-                ]]
-
-            ],
-        )
-        # 1
-        n,m=3,4
-        map=["....",
-             ".*..",
-             "...."
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [14,[
-                    (1 ,1),
-                    (1 ,2),
-                    (1 ,3),
-                    (2 ,3),
-                    (3 ,3),
-                    (3 ,2),
-                    (3 ,1),
-                    (2 ,1),
-                    (1 ,1),
-                    (1 ,2),
-                    (1 ,3),
-                    (1 ,4),
-                    (2 ,4),
-                    (3 ,4),
-                ]]
-
-            ],
-        )
-        # 2
-        n,m=3,3
-        map=["...",
-             "*..",
-             ".*."
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [-1,[
-                    
-                ]]
-
-            ],
-        )
-
-        # 3
-        n,m=1 ,1
-        map=[".",
-            
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [1,[(1,1)
-                    
-                ]]
-
-            ],
-        )
-        
-        # 4
-        n,m=1 ,1
-        map=["*",
-            
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [-1,[
-                    
-                ]]
-
-            ],
-        )
-        # 5
-        n,m=1 ,2
-        map=[".*",
-            
-            ]
-        tests.append(
-            [
-                # inputs
-                [
-                    n,m,map
-                ],
-                # res
-                [-1,[
-                    
-                ]]
-
-            ],
-        )
-        
-        for input, res in tests[index:]:
-            
-            test_driver(s.venue_cleaning, input[0],input[1],input[2],  expected=res)
+    print(res)
+    if len(res_path)>0:
+        for _ in res_path:
+            print("%d %d"%(_[0],_[1]))
+    

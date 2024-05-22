@@ -19,17 +19,21 @@ for opt,arg in opts:
 	elif opt in ("-f","--fileName"):
 		file_name=arg
 	elif opt in ("-h","--help"):
-		print('sample usage: py move_file.py -t py -d -f \'3075. Maximize Happiness of Selected Children\'')
+		print('sample usage(leetcode): py move_file.py -t py -d -f \'3075. Maximize Happiness of Selected Children\'\n'+
+		      'sample usage(codeforce):py move_file.py -m cf -f \"123\"')
 		sys.exit(0)
 	else:
 		print('Unknow Option')
 		print('sample usage: py move_file.py -t py -d -f \'3075. Maximize Happiness of Selected Children\'')
 		sys.exit(0)
-
-file_name=file_name.replace('_','')
-file_name=file_name.replace(' ','_')
-file_name=file_name.replace('.','')
-file_name=file_name.replace('-','_')
+try:
+	file_name=file_name.replace('_','')
+	file_name=file_name.replace(' ','_')
+	file_name=file_name.replace('.','')
+	file_name=file_name.replace('-','_')
+except:
+	print("please specify filename")
+	sys.exit(-1)
 
 if not os.path.exists('./solutions/'+file_name+'.'+file_type):
 	if search_sol('solutions',file_name):
@@ -54,7 +58,7 @@ if not os.path.exists('./solutions/'+file_name+'.'+file_type):
 	shutil.copyfile('./'+main_name+'.'+file_type,'./solutions/'+file_name+'.'+file_type)
 	
 	if main_name=="code_force_main":
-		test_case_file='code_force_test_cases'
+		test_case_file='code_force_main'
 		shutil.copyfile('./'+test_case_file+'.'+'txt','./solutions/'+file_name+'.'+'txt')
 	if debug:
 		shutil.copyfile('./debug.'+file_type,'./solutions/'+file_name+'_debug.'+file_type)
