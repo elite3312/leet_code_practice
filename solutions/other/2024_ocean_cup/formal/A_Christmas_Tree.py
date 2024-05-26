@@ -1,4 +1,5 @@
 # disjoint set
+
 from collections import Counter
 
 
@@ -61,20 +62,15 @@ class Solution:
             find(parents_no_red,i)
         
         # check counts
-        cnter_no_yellow=Counter(parents_no_yellow[1:])
-        cnter_no_red=Counter(parents_no_red[1:])
-        for k in cnter_no_yellow:
-            if cnter_no_yellow[k]>1:
-                red_cnt=0
-                for i in range(1,n+1):
-                    if colors[i]=='R':red_cnt+=1
-                    if red_cnt>1:return False
-        for k in cnter_no_red:
-            if cnter_no_red[k]>1:
-                yellow_cnt=0
-                for i in range(1,n+1):
-                    if colors[i]=='Y':yellow_cnt+=1
-                    if yellow_cnt>1:return False
+        cnt_red=Counter()
+        cnt_yellow=Counter()
+        for i in range(1,n+1):
+            if colors[i]=='R':
+                cnt_red[parents_no_yellow[i]]+=1
+                if cnt_red[parents_no_yellow[i]]>1:return False
+            if colors[i]=='Y':
+                cnt_yellow[parents_no_red[i]]+=1
+                if cnt_yellow[parents_no_red[i]]>1:return False
 
         return True
 
