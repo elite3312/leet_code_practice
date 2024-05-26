@@ -1,0 +1,62 @@
+in0
+4
+R G Y Y
+1 2
+1 3
+1 4
+out0
+It is a Christmas tree!
+in1
+5
+R Y R R Y
+1 2
+1 5
+2 3
+2 4
+out1
+It is a Christmas tree!
+in2
+7
+G Y R R G G G
+1 2
+1 3
+1 4
+2 5
+3 6
+4 7
+out2
+What an ugly tree!
+in3
+out3
+in4
+out4
+in5
+out5
+in6
+out6
+in7
+out7
+in8
+out8
+in9
+out9
+in10
+out10
+in11
+out11
+in12
+out12
+in13
+out13
+in14
+out14
+in15
+out15
+in16
+out16
+in17
+out17
+in18
+out18
+in19
+out19
