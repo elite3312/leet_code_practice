@@ -65,7 +65,6 @@ class Solution:
                 #we should find the first start greater than x
                 first_start_greater_than_x=first_start_less_than_x+1
                 dist_right=l[first_start_greater_than_x][0]-x-1
-
                 # add a new interval
                 dist=min(dist_left,dist_right)
                 l.insert(first_start_greater_than_x,[x-dist,x+dist,i])

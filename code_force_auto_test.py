@@ -7,15 +7,19 @@ import subprocess
 from utils.test_driver import show_test_result
 from utils.text_colors import bcolors
 debug=False
-opts, args = getopt.getopt(sys.argv[1:], "f:ht:v", [
-                          "filePath", "help","testPath","verbose"])
+opts, args = getopt.getopt(sys.argv[1:], "f:ht:vo:", [
+                          "filePath", "help","testPath","verbose","os"])
+                          
 # default values
+cmd="py"
 filePath="code_force_main.py"
 test_path="code_force_main.txt"
 verbose=False
 for opt, arg in opts:
     if opt in ("-f", "--filePath"):
         filePath = arg
+    elif opt in ("-o", "--os"):
+        if arg=='mac':cmd='python3'
     elif opt in ("-t", "--testPath"):
         test_path = arg
     elif opt in ("-v", "--verbose"):
@@ -69,7 +73,7 @@ for i  in range(n):
     tk_in=test_inputs[i]
     tk_out=test_outputs[i]
     process=subprocess.Popen(
-        ["py", filePath],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        [cmd, filePath],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
     # Write to stdin
     _input="".join(tk_in)
