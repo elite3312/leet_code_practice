@@ -1,5 +1,6 @@
 #from collections import deque
 from utils.test_driver import test_driver
+from utils.text_colors import bcolors
 class Solution:
     def numberOfPairs(self, nums1: list[int], nums2: list[int], k: int) -> int:
         n=len(nums1)
@@ -38,5 +39,6 @@ if __name__ == "__main__":
         if not test_driver(sol.numberOfPairs, input[0],input[1],input[2], expected=res):
             fail_cnt+=1
     if fail_cnt>0:
-        print("%d tests failed"%fail_cnt)
-
+        print(bcolors.FAIL+"%d tests failed"%fail_cnt+bcolors.ENDC)
+    else:
+        print(bcolors.OKGREEN+"All %s tests passed"%len(tests)+bcolors.ENDC)
