@@ -1,5 +1,5 @@
-from utils.test_driver import test_driver
-from utils.text_colors import bcolors
+from utils.test_driver import test_driver_main
+
 '''
 built-in libraries imports
 '''
@@ -78,11 +78,4 @@ if __name__ == "__main__":
         
     ]
 
-    fail_cnt=0
-    for input, res in tests[index:]:
-        if not test_driver(sol.isNStraightHand, input[0],input[1], expected=res):
-            fail_cnt+=1
-    if fail_cnt>0:
-        print(bcolors.FAIL+"%d tests failed"%fail_cnt+bcolors.ENDC)
-    else:
-        print(bcolors.OKGREEN+"All %s tests passed"%len(tests)+bcolors.ENDC)
+    test_driver_main(sol.isNStraightHand,tests,index)
