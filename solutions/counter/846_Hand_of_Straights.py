@@ -21,6 +21,7 @@ class Solution:
             max_e=max(max_e,e)
         cur=min_e
 
+        # start from the smallest possible hand, and decrease cnters accordingly
         processed_elem_cnt=0
         while 1:
             # search for a consecutive hand
