@@ -21,7 +21,7 @@ class Solution:
         for i in range(1,100):
             powers[i]=powers[i-1]*base%mod
 
-        #helper func to get the prefix hash
+        #helper func to get the prefix hash or compute hash
         def genhash_or_check(s:str,check:bool,d:dict,max_root_len:int):
             
             '''
