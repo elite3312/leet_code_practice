@@ -6,50 +6,25 @@ from utils.test_driver import test_driver_main
 
 
 class Solution:
-    def numberOfSubmatrices(self, grid: list[list[str]]) -> int:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        bottles_left=numBottles
 
-        m, n = len(grid), len(grid[0])
+        res=0
 
-        pref_sum = {}
-        for val in ['X', "Y", "."]:
-            # X_pref_sum[i][j]=sum of x for matrix[0:i][0:j]
-            pref_sum[val] = [[0 for j in range(n+1)]for i in range(m+1)]
+        res+=bottles_left
+        bottles_left=bottles_left/numExchange+bottles_left%numExchange
 
-        a = grid[0][0]
-        res = 0
-        for i in range(m):
-            for j in range(n):
-                for val in ['X', "Y", "."]:
-                    pref_sum[val][i+1][j+1] = pref_sum[val][i+1][j] +\
-                        pref_sum[val][i][j+1]-pref_sum[val][i][j] +\
-                        int(grid[i][j] == val)
-
-                if pref_sum["X"][i+1][j+1] == pref_sum["Y"][i+1][j+1] \
-                        and pref_sum[a][i+1][j+1] > 0 \
-                        and pref_sum['X'][i+1][j+1] > 0:
-                    res += 1
-        return res
-
-
+        while full_bottles_left>numBottles
 if __name__ == "__main__":
     sol = Solution()
 
     index = 2
 
     tests = [
-        [[[["X", "Y", "."],
-           ["Y", ".", "."]]],
-         3
+        [[9,3],
+         13
          ],
-        [[[[".", "Y", "."],
-           ["Y", "X", "."]]],
-         1
-         ],
-        [[[[".", "."], [".", "."]]],
-         0
-
-         ]
-
+      
     ]
 
-    test_driver_main(sol.numberOfSubmatrices, tests, index)
+    test_driver_main(sol.numWaterBottles, tests, index)
