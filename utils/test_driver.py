@@ -3,6 +3,9 @@ from utils.text_colors import bcolors
 
 
 def test_driver_main(method: any, tests: list, index: int):
+    if index>=len(tests):
+        print(bcolors.FAIL+"Test index out of bounds" +bcolors.ENDC)
+        return
     fail_cnt = 0
     for input, res in tests[index:]:
         if not test_driver(method, *input, expected=res):
