@@ -13,7 +13,7 @@ def test_driver_main(method: any, tests: list, index: int):
     if fail_cnt > 0:
         print(bcolors.FAIL+"%d tests failed" % fail_cnt+bcolors.ENDC)
     else:
-        print(bcolors.OKGREEN+"All %s tests passed" % len(tests)+bcolors.ENDC)
+        print(bcolors.OKGREEN+"All %s tests passed" % (len(tests)-index)+bcolors.ENDC)
 
 
 def test_driver(main, *inputs, expected: any):
