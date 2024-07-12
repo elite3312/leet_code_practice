@@ -36,6 +36,8 @@ except :
     print("please specify filename")
     sys.exit(-1)
 
+# move to solutions
+src_dest_pairs=[]
 if not os.path.exists('./solutions/'+file_name+'.'+file_type):
     if search_sol('solutions', file_name):
         # check for file_name_x.py
@@ -47,7 +49,7 @@ if not os.path.exists('./solutions/'+file_name+'.'+file_type):
                 ends_with_num = True
         if ends_with_num:
             print("creating a copy with incremented index")
-# increment num
+            # increment num
             last_token = str(int(last_token, 10)+1)
             file_name_before_dot = file_name_before_dot.split('_')
             file_name_before_dot[-1] = last_token
@@ -56,15 +58,40 @@ if not os.path.exists('./solutions/'+file_name+'.'+file_type):
         else:
             print("creating a copy with index 1")
             file_name = file_name+'_1'
-    shutil.copyfile('./'+main_name+'.'+file_type,
-                    './solutions/'+file_name+'.'+file_type)
+    src='./'+main_name+'.'+file_type
+    dest='./solutions/'+file_name+'.'+file_type
+    shutil.copyfile(src,dest)
+    src_dest_pairs.append((src,dest))
 
     if main_name == "code_force_main":
         test_case_file = 'code_force_main'
-        shutil.copyfile('./'+test_case_file+'.'+'txt',
-                        './solutions/'+file_name+'.'+'txt')
+        src='./'+test_case_file+'.'+'txt'
+        dest='./solutions/'+file_name+'.'+'txt'
+        shutil.copyfile(src,dest)
+        src_dest_pairs.append((src,dest))
     if debug:
-        shutil.copyfile('./debug.'+file_type, './solutions/' +
-                        file_name+'_debug.'+file_type)
+        src='./debug.'+file_type
+        dest='./solutions/' + file_name+'_debug.'+file_type
+        shutil.copyfile(src,dest)
+        src_dest_pairs.append((src,dest))
+        
 else:
     print('file exists')
+    sys.exit()
+
+
+
+
+# move to respective category
+print("select dir to archive:\n")
+_existing_categories=os.listdir("./solutions/")
+_existing_categories=[e for e in _existing_categories if os.path.isdir( os.path.join("./solutions",e))]
+choices=[]
+for i,elem in enumerate(_existing_categories):
+    print("%d %s"%(i, elem))
+    choices.append(elem)
+_choice=int(input("Enter index:"))
+
+if _choice>-1 and _choice<len(_existing_categories):
+    for src_dest_pair in src_dest_pairs:
+        shutil.move(src_dest_pair[1],os.path.join('./solutions',choices[_choice]))
