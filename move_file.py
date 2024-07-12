@@ -2,6 +2,7 @@ import getopt
 import shutil
 import sys
 import os
+from utils.text_colors import bcolors
 
 from search_sol import search_sol
 debug = False
@@ -36,6 +37,14 @@ except :
     print("please specify filename")
     sys.exit(-1)
 
+def save_copy(_src:str,_dest:str,_src_dest_pairs:list):
+    '''helper func'''
+    try:
+        shutil.copyfile(_src,_dest)
+        _src_dest_pairs.append((_src,_dest))
+    except FileNotFoundError:
+        print(bcolors.WARNING+"file %s not found, skipping"%_src+bcolors.ENDC)
+
 # move to solutions
 src_dest_pairs=[]
 if not os.path.exists('./solutions/'+file_name+'.'+file_type):
@@ -60,20 +69,18 @@ if not os.path.exists('./solutions/'+file_name+'.'+file_type):
             file_name = file_name+'_1'
     src='./'+main_name+'.'+file_type
     dest='./solutions/'+file_name+'.'+file_type
-    shutil.copyfile(src,dest)
-    src_dest_pairs.append((src,dest))
+    save_copy(src,dest,src_dest_pairs)
 
     if main_name == "code_force_main":
         test_case_file = 'code_force_main'
         src='./'+test_case_file+'.'+'txt'
         dest='./solutions/'+file_name+'.'+'txt'
-        shutil.copyfile(src,dest)
-        src_dest_pairs.append((src,dest))
+        save_copy(src,dest,src_dest_pairs)
     if debug:
         src='./debug.'+file_type
         dest='./solutions/' + file_name+'_debug.'+file_type
-        shutil.copyfile(src,dest)
-        src_dest_pairs.append((src,dest))
+        save_copy(src,dest,src_dest_pairs)
+            
         
 else:
     print('file exists')
@@ -83,7 +90,7 @@ else:
 
 
 # move to respective category
-print("select dir to archive:\n")
+print("select dir to archive:")
 _existing_categories=os.listdir("./solutions/")
 _existing_categories=[e for e in _existing_categories if os.path.isdir( os.path.join("./solutions",e))]
 choices=[]
