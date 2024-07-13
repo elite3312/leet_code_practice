@@ -97,7 +97,7 @@ choices=[]
 for i,elem in enumerate(_existing_categories):
     print("%d %s"%(i, elem))
     choices.append(elem)
-_choice=int(input("Enter index:"))
+_choice=int(input("Enter index:(-1 to leave in ./solutions)"))
 
 if _choice>-1 and _choice<len(_existing_categories):
     for src_dest_pair in src_dest_pairs:
