@@ -7,71 +7,83 @@
 #include <cstring>
 #include <math.h>
 #include <map>
+#include <bitset>
 using namespace std;
 /**copy from here**/
-const int  base=23,mod=1e7+7;
-class Solution {
+class Solution
+{
 public:
-	
-    int minimumTimeToInitialState(string word, int k) {
-		int res=0,n=word.size();
+	int numMagicSquaresInside(vector<vector<int>> &grid){
+		// edge case
+		int m = grid.size(), n = grid[0].size();
+		if (m < 3 || n < 3)
+			return 0;
 
-		/*Precompute the powers of the base modulo the mod*/
-		vector<int> power(n, 1);
-		for (int i = 1; i < n; i++) {
-			power[i] = (power[i - 1] * base) % mod;
-		}
+		int res = 0;
+		/*for each upper left i,j*/
+		for (int i = 0; i < m - 3 + 1; i++)
+			for (int j = 0; j < n - 3 + 1; j++)
+			{
+				/*check if numbers are distinct*/
+				bitset<10> once;
+				bool isDisdinct=true;
+				for (int n_i=0;n_i<3;n_i++){
+					for (int n_j=0;n_j<3;n_j++)
+						if (grid[i+n_i][j+n_j]>9||grid[i+n_i][j+n_j]==0||//only allow 1 to 15
+							once[grid[i+n_i][j+n_j]])//if it already appeared, then it is not distinct
+							{
+								isDisdinct=false;
+								break;
+							}
+						else
+							once.flip(grid[i+n_i][j+n_j]);
+					if (!isDisdinct)
+						break;
+				}
+				if (!isDisdinct)
+					continue;
+				
+				//check equal sums
+				/*rows*/
+				int sum = grid[i][j] + grid[i][j + 1] + grid[i][j + 2]; // row 0
+				if (sum != grid[i + 1][j] + grid[i + 1][j + 1] + grid[i + 1][j + 2]) // row 1
+					continue;
+				if (sum != grid[i + 2][j] + grid[i + 2][j + 1] + grid[i + 2][j + 2]) // row 2
+					continue;
 
-		/*compute forward_hashs for word*/
-		vector<long long> forward_hashs(n, 0);
-		forward_hashs[0]=word[0]*power[0]%mod;
-		for(int i = 1; i < n; i++)
-			forward_hashs[i]=(forward_hashs[i-1]+word[i]*power[i])%mod;
-		
-		/*same logic from 3029*/
-		int right_len=n,right_hash=forward_hashs[n-1];
-		while(1){
-			res++;
-			if (right_len-1>=k){
-				right_len-=k;
-				for(int i=0;i<k;i++)
-					right_hash=(right_hash-word[n-right_len+i]*power[n-right_len+i])/base%mod;
+				/*cols*/
+				if (sum != grid[i][j] + grid[i + 1][j] + grid[i + 2][j]) // col 0
+					continue;
+				if (sum != grid[i][j + 1] + grid[i + 1][j + 1] + grid[i + 2][j + 1]) // col 1
+					continue;
+				if (sum != grid[i][j + 2] + grid[i + 1][j + 2] + grid[i + 2][j + 2]) // col 2
+					continue;
+
+				/*diagonals*/
+				if (sum != grid[i][j] + grid[i + 1][j + 1] + grid[i + 2][j + 2]) // col 2
+					continue;
+				if (sum != grid[i][j + 2] + grid[i + 1][j + 1] + grid[i + 2][j]) // col 2
+					continue;
+
+				res += 1;
 			}
-			else break;
-			
-			if (forward_hashs[right_len-1]==right_hash)break;
-		}
-		
+
 		return res;
-    }
+	}
 };
 /**copy to here**/
 int main()
 {
 	Solution *s = new Solution();
-	//string a="123412";
-	//auto t1=s->starts_with(a,1);
-	//auto t2=s->starts_with(a,4);
-	//return 0;
-	vector<int> nums;
+	vector<vector<int>> a = {{4, 3, 8, 4},
+							 {9, 5, 1, 9},
+							 {2, 7, 6, 2}};
+	cout << s->numMagicSquaresInside(a);
 
-	string w;int k;
+	vector<vector<int>> b = {{5, 5, 5, 5},
+							 {5, 5, 5, 5},
+							 {5, 5, 5, 5}};
+	cout << s->numMagicSquaresInside(b);
 
-	w="aab";k=2;
-	cout<<s->minimumTimeToInitialState(w,k);//2
-
-	w="aa";k=1;
-	cout<<s->minimumTimeToInitialState(w,k);//1
-
-	w="abacaba";k=3;
-	cout<<s->minimumTimeToInitialState(w,k);//2
-
-	w="abacaba";k=4;
-	cout<<s->minimumTimeToInitialState(w,k);//1
-
-	w="abcbabcd";k=2;
-	cout<<s->minimumTimeToInitialState(w,k);//4
-	
 	return 0;
 }
-
