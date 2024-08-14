@@ -19,7 +19,7 @@ public:
         int maxElement = *max_element(nums.begin(), nums.end());
 
         // Initialize a bucket array to store counts of each distance
-        vector<int> distanceBucket(maxElement + 1, 0);
+        vector<int> distanceBucket(maxElement + 1, 0);//+1 for 0 to n(not 0 to n-1)
 
         // Populate the bucket array with counts of each distance
         for (int i = 0; i < arraySize; ++i) {
