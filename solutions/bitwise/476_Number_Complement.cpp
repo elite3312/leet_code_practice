@@ -22,6 +22,7 @@ public:
         return bits;
     }
     int findComplement(int num) {
+        //get bitlen, then flip the rightmost such bits with a mask and xor
         int bits=getBits(num),mask=1;
         while (bits--){
             num^=mask;
