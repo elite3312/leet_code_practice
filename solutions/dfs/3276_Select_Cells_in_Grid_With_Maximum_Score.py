@@ -15,7 +15,7 @@ class Solution:
         # mask是一個長度m的bit string，用以紀錄哪些row被選取了，長度最多10
         # prev是一個變數，紀錄上次拿得值，值從0到100
         # 我們要在二維陣列中從小的值取到大的值
-        dp=[[-1 for j in range(101)]for i in range(1<<m)]# dp[i][j]=當狀態為mask時，
+        dp=[[-1 for j in range(101)]for i in range(1<<m)]# dp[i][j]=當狀態為mask，上一次取的值是j，達到的最大總和
 
         def dfs(mask,prev):
             if(mask == ((1<<m)-1)):# 11111..111, all rows visited，代表每個row都被拿過了
