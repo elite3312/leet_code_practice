@@ -9,7 +9,7 @@
 #include <map>
 #include <bitset>
 using namespace std;
-/**copy from here**/
+
 
 // Definition for singly-linked list.
 struct ListNode
@@ -20,7 +20,29 @@ struct ListNode
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
-
+ListNode *list_from_vec(vector<int> v)
+{
+    ListNode *cur = new ListNode(-1);
+    ListNode *head = cur;
+    for (auto e : v)
+    {
+        cur->next = new ListNode(e);
+        cur = cur->next;
+    }
+    head = head->next;
+    return head;
+}
+void print_2d_vec(int m, int n, const vector<vector<int>> &res)
+{
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+            printf("%2d", res[i][j]);
+        cout << endl;
+    }
+    cout << endl;
+}
+/**copy from here**/
 class Solution
 {
 public:
@@ -81,28 +103,7 @@ public:
 };
 
 /**copy to here**/
-ListNode *list_from_vec(vector<int> v)
-{
-    ListNode *cur = new ListNode(-1);
-    ListNode *head = cur;
-    for (auto e : v)
-    {
-        cur->next = new ListNode(e);
-        cur = cur->next;
-    }
-    head = head->next;
-    return head;
-}
-void print_2d_vec(int m, int n, const vector<vector<int>> &res)
-{
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-            printf("%2d", res[i][j]);
-        cout << endl;
-    }
-    cout << endl;
-}
+
 int main()
 {
     Solution *s = new Solution();
