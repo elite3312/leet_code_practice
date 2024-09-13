@@ -57,7 +57,7 @@ public:
     011 ^ 110 = 101, which is xor of (2,3)
     */
     vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
-        auto n=arr.size();
+        int n=arr.size();
         vector<int> xor_prefsum(n,0);
         xor_prefsum[0]=arr[0];
         for ( int i =1 ;i<n;++i){
