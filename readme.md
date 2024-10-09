@@ -28,7 +28,7 @@ py .\move_file.py -f '123' -m cf
 ## gdb
 
 ```sh
-> & "C:\\msys64\\ucrt64\\bin\\gdb.exe" .\main.exe
+& "C:\\msys64\\ucrt64\\bin\\gdb.exe" .\main.exe
 ```
 
 ## todo
