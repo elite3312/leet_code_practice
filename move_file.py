@@ -14,6 +14,7 @@ for opt, arg in opts:
     if opt in ("-t", "--fileType"):
         file_type = arg
     elif opt in ("-d", "--debug"):
+        # include debug files
         debug = True
     elif opt in ("-m", "--mainName"):
         if arg == 'cf':
