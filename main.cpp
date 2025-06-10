@@ -43,33 +43,90 @@ void print_2d_vec(int m, int n, const vector<vector<int>> &res)
     cout << endl;
 }
 /**copy from here**/
+
 class Solution {
 public:
-    /*
-    example:
-    arr:        011 101 111 010
-    xor_prefsum:011 110 001 011
-
-    now what if we want the xor of (2,3)?
-    we know that any number xored with itself is 0, 
-    so we can xor the xor_prefsum of (0,1) to cancel out the values of (0,1)
-
-    011 ^ 110 = 101, which is xor of (2,3)
-    */
-    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
-        auto n=arr.size();
-        vector<int> xor_prefsum(n,0);
-        xor_prefsum[0]=arr[0];
-        for ( int i =1 ;i<n;++i){
-            xor_prefsum[i]=xor_prefsum[i-1]^arr[i];
+    string lastSubstring(string s) {
+        int i = 0, j = 1, n = s.size();
+        while (j < n) {
+            int k = 0;
+            while (j + k < n && s[i + k] == s[j + k]) {
+                k++;
+            }
+            if (j + k < n && s[i + k] < s[j + k]) {
+                int t = i;
+                i = j;
+                j = max(j + 1, t + k + 1);
+            } else {
+                j = j + k + 1;
+            }
         }
-        vector<int>res;
-        for (auto q:queries){
-            if (q[0]==q[1])res.push_back(arr[q[0]]);
-            else if (q[0]>0)
-                res.push_back(xor_prefsum[q[1]]^xor_prefsum[q[0]-1]);
-            else
-                res.push_back(xor_prefsum[q[1]]);
+        return s.substr(i, n - i);
+    }
+
+    string answerString(string word, int numFriends) {
+        if (numFriends == 1) {
+            return word;
+        }
+        string last = lastSubstring(word);
+        int n = word.size(), m = last.size();
+        return last.substr(0, min(m, n - numFriends + 1));
+    }
+};
+class Solution0{
+public:
+    string answerString(string word, int numFriends) {
+        if (numFriends ==1) {
+            return word;
+        } 
+        int max_idx=0,cur_max=-1;
+        int n=word.size();
+        for (int i=0;i<n;i++){
+            if (word[i]>cur_max){
+                cur_max=word[i];
+                max_idx=i;
+            }
+        }
+        int k=n - numFriends + 1;
+        return word.substr(max_idx,k);
+    }
+    string answerString0(string word, int numFriends) {
+     
+        int n = word.size();
+        /*
+        n=1,  return word
+        n=2,  return word[:n-1]
+        n=3,  return word[:n-2]
+        */
+        if (numFriends ==1) {
+            return word;
+        } 
+        int k=n - numFriends + 1;
+
+        /*first window*/
+        auto res= word.substr(0, k);
+
+        /*sliding window from 1 to n-k*/
+        for (int i=1;i+ k<=n; i++) {
+            string temp;
+            bool bigger=false;
+            bool equals=false;
+            for (int j = 0; j < k; j++) {
+                
+                if (word[i+j]>res[j])
+                    bigger=true;
+                else if (word[i+j]==res[j])
+                    equals=true;
+                if (equals && word[i+j]<res[j])
+                    break;
+                
+                if (bigger || equals)
+                    temp.push_back(word[i+j]);
+               
+            }
+            if (temp.size() == k) {
+                res = temp;
+            }
         }
         return res;
     }
@@ -82,15 +139,15 @@ int main()
     int test_case = 0, start_from = 0;
 
 
-    vector<int> arr;
-    vector<vector<int>> queries;
+    string a;
+    int n=2;
 
     /*case 1*/
     if (test_case>=start_from)
         {
-            arr={3};
-            queries={{0,0}};
-            auto res=s->xorQueries(arr,queries);
+            a="dbca";
+            n=2;
+            auto res=s->answerString(a,n);
             for (auto e : res){
                 cout<<e<<' ';
             }
@@ -99,20 +156,47 @@ int main()
         }
     test_case += 1;
     
+
     /*case 2*/
     if (test_case>=start_from)
         {
-            arr={1,3,4,8};
-            queries={{0,1},{1,2},{0,3},{3,3}};
-            auto res=s->xorQueries(arr,queries);
+            a="gggg";
+            n=4;
+            auto res=s->answerString(a,n);
             for (auto e : res){
                 cout<<e<<' ';
             }
             cout<<endl;
-            //2 7 14 8
+            //3
         }
     test_case += 1;
     
+    /*case 3*/
+    if (test_case>=start_from)
+        {
+            a="gh";
+            n=1;
+            auto res=s->answerString(a,n);
+            for (auto e : res){
+                cout<<e<<' ';
+            }
+            cout<<endl;
+            //3
+        }
+    test_case += 1;
 
+    /*case 4*/
+    if (test_case>=start_from)
+        {
+            a="bif";
+            n=2;
+            auto res=s->answerString(a,n);
+            for (auto e : res){
+                cout<<e<<' ';
+            }
+            cout<<endl;
+            //3
+        }
+    test_case += 1;
     return 0;
 }
