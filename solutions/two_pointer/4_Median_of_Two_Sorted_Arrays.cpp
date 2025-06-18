@@ -48,20 +48,17 @@ public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         int n= nums1.size();
         int m= nums2.size();
-        //if (n > m) {
-        //    return findMedianSortedArrays(nums2, nums1); // Ensure nums1 is the smaller array
-        //}
 
         //O(n+m)
         bool even=false;
         if ((n+m)%2==0)
             even=true;
         
-        int target_idx=(n+m)/2;
+        int target_idx=(n+m)/2;//if even, the index of the median, if odd, the index of the median+1
    
     
         
-        int i=0,j=0,total=0;
+        int i=0,j=0,total=0;//total is the number of elements we have seen so far
 
         double cur,prev;
         while(1){
@@ -73,7 +70,7 @@ public:
                 cur=nums1[i++];
             }
             else{
-                if (nums1[i]<nums2[j])
+                if (nums1[i]<nums2[j])//since we are sorting in ascending order
                     cur=nums1[i++];
                 else
                     cur=nums2[j++];
