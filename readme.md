@@ -20,7 +20,7 @@ python3 search_sol.py [keyword]
 
 ```sh
 #move file, leetcode usage
-py move_file.py -t py -d -f '1337. Its High Noon'   
+py move_file.py -t py -f '3534. Path Existence Queries in a Graph II'   
 #move file, code force usage
 py .\move_file.py -f '123' -m cf
 ```
